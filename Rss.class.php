@@ -32,7 +32,7 @@ class Rss
      * @param int $forumId Id of the forum, default null.
      * @param string $articleType Article type, default null.
      * @return mixed RSS feed, optionally filtered, false on error.
-     */
+     */ 
     public function GetFeed($forumId, $articleType)
     {
         $urlParts = array ();
