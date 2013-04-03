@@ -16,7 +16,7 @@ class Base {
     (
         'solved', 'upvoted', 'downvoted'
     );
-
+    
     /**
      * Returns the list of supported article types.
      *

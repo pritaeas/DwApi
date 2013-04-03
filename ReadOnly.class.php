@@ -3,12 +3,12 @@ class ReadOnly extends Base
 {
     public function GetArticles($articleIds, $articleType, $orderBy, $page, $forumId)
     {
-
+        
     }
 
     public function GetForums($forumsIds, $includeSelf)
     {
-
+        
     }
 
     public function GetMemberActivityPoints($id)
