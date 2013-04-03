@@ -10,6 +10,14 @@ class Base {
     );
 
     /**
+     * @var array List of supported post types.
+     */
+    protected $postTypes = array
+    (
+        'solved', 'upvoted', 'downvoted'
+    );
+
+    /**
      * Returns the list of supported article types.
      *
      * @param bool $sorted Sort the list alphabetically, default true.
@@ -18,6 +26,22 @@ class Base {
     public function GetArticleTypes($sorted = true)
     {
         $result = $this->articleTypes;
+        if ($sorted)
+        {
+            sort($result);
+        }
+        return $result;
+    }
+
+    /**
+     * Returns the list of supported post types.
+     *
+     * @param bool $sorted Sort the list alphabetically, default true.
+     * @return array List of post types.
+     */
+    public function GetPostTypes($sorted = true)
+    {
+        $result = $this->postTypes;
         if ($sorted)
         {
             sort($result);
