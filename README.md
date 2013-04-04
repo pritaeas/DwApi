@@ -12,7 +12,7 @@ Contains classes to help get information from the DaniWeb API.
 Usage
 =====
 
-When using the Rss class make sure you include the Base class first.
+When using the ReadOnly/Rss class make sure you include the Base class first.
 
     include 'Base.class.php';
     include 'Rss.class.php';
