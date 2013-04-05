@@ -62,11 +62,12 @@ class ReadOnly extends Base
         }
 
         $forumIdString = implode(';', $forumIdList);
-        $url = "// http://www.daniweb.com/api/forums/{$forumIdString}/articles";
+        $url = "http://www.daniweb.com/api/forums/{$forumIdString}/articles";
         if (is_int($page) and ($page > 0))
         {
             $url .= "?page={$page}";
         }
+
         return $this->GetUrl($url);
     }
 
