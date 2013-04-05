@@ -92,16 +92,49 @@ class ReadOnly extends Base
         return $this->GetUrl($url);
     }
 
-    // incomplete
-    public function GetForums($forumIds, $includeSelf)
+    /**
+     * Get a list of (filtered) forums.
+     *
+     * @param mixed $forumIds Forum ID as int, or array of int (optional).
+     * @param null|string $relation Forum relation type (optional).
+     * @param bool|null $includeSelf Include the forumID in the result (optional), default false.
+     * @return bool|string JSON result, false on error.
+     */
+    public function GetForums($forumIds = null, $relation = null, $includeSelf = null)
     {
-        // http://www.daniweb.com/api/forums
-        // http://www.daniweb.com/api/forums/children?include_self=
-        // http://www.daniweb.com/api/forums/descendants?include_self=
-        // http://www.daniweb.com/api/forums/{:IDS}
-        // http://www.daniweb.com/api/forums/{:IDS}/ancestors?include_self=
-        // http://www.daniweb.com/api/forums/{:IDS}/children?include_self=
-        // http://www.daniweb.com/api/forums/{:IDS}/descendants?include_self=
+        $url = 'http://www.daniweb.com/api/forums';
+
+        $forumIdList = array();
+        if (is_int($forumIds) and ($forumIds > 0))
+        {
+            $forumIdList[] = $forumIds;
+        }
+        else if (is_array($forumIds))
+        {
+            foreach ($forumIds as $forumId)
+            {
+                if (is_int($forumId) and ($forumId > 0))
+                {
+                    $forumIdList[] = $forumId;
+                }
+            }
+        }
+        if (count($forumIdList) > 0)
+        {
+            $url .= '/' . implode(';', $forumIdList);
+        }
+
+        if (is_string($relation) and in_array($relation, $this->relationTypes))
+        {
+            $url .= "/$relation";
+        }
+
+        if (is_bool($includeSelf))
+        {
+            $url .= '?' . ($includeSelf ? 'true' : 'false');
+        }
+
+        return $this->GetUrl($url);
     }
 
     /**
