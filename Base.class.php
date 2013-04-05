@@ -16,6 +16,14 @@ class Base {
     (
         'solved', 'upvoted', 'downvoted'
     );
+
+    /**
+     * @var array List of forum relation types.
+     */
+    protected $relationTypes = array
+    (
+        'ancestors', 'children', 'descendants'
+    );
     
     /**
      * Get the list of supported article types.
@@ -42,6 +50,22 @@ class Base {
     public function GetPostTypes($sorted = true)
     {
         $result = $this->postTypes;
+        if ($sorted)
+        {
+            sort($result);
+        }
+        return $result;
+    }
+
+    /**
+     * Get the list of supported forum relation types.
+     *
+     * @param bool $sorted Sort alphabetically (optional), default true.
+     * @return array List of forum relation types.
+     */
+    public function GetRelationTypes($sorted = true)
+    {
+        $result = $this->relationTypes;
         if ($sorted)
         {
             sort($result);
