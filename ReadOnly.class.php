@@ -18,7 +18,7 @@ class ReadOnly extends Base
         $url = "http://www.daniweb.com/api/articles/{$articleId}/posts";
         if (is_int($page) and ($page > 0))
         {
-            $url .= '?page=' . $page;
+            $url .= "?page={$page}";
         }
         return $this->GetUrl($url);
     }
@@ -34,8 +34,8 @@ class ReadOnly extends Base
      * Get a list of articles for a specific forum ID, or an array of forum IDs.
      *
      * @param mixed $forumIds Forum ID as int, or array of int.
-     * @param int $page Page number.
-     * @return mixed JSON result, false on error.
+     * @param int|null $page Page number.
+     * @return bool|string JSON result, false on error.
      */
     public function GetForumArticles($forumIds, $page = null)
     {
@@ -65,7 +65,7 @@ class ReadOnly extends Base
         $url = "// http://www.daniweb.com/api/forums/{$forumIdString}/articles";
         if (is_int($page) and ($page > 0))
         {
-            $url .= '?page=' . $page;
+            $url .= "?page={$page}";
         }
         return $this->GetUrl($url);
     }
@@ -74,8 +74,8 @@ class ReadOnly extends Base
      * Get posts for a specific forum.
      *
      * @param int $forumId Forum ID.
-     * @param int $page Page number (optional).
-     * @return mixed JSON result, false on error.
+     * @param int|null $page Page number (optional).
+     * @return bool|string JSON result, false on error.
      */
     public function GetForumPosts($forumId, $page = null)
     {
@@ -87,7 +87,7 @@ class ReadOnly extends Base
         $url = "http://www.daniweb.com/api/forums/{$forumId}/posts";
         if (is_int($page) and ($page > 0))
         {
-            $url .= '?page=' . $page;
+            $url .= "?page={$page}";
         }
         return $this->GetUrl($url);
     }
@@ -108,7 +108,7 @@ class ReadOnly extends Base
      * Get activities for a specific member.
      *
      * @param int $memberId Member ID.
-     * @return mixed JSON result, false on error.
+     * @return bool|string JSON result, false on error.
      */
     public function GetMemberActivityPoints($memberId)
     {
@@ -130,7 +130,7 @@ class ReadOnly extends Base
      * Get endorsements for a specific member.
      *
      * @param int $memberId Member ID.
-     * @return mixed JSON result, false on error.
+     * @return bool|string JSON result, false on error.
      */
     public function GetMemberEndorsements($memberId)
     {
@@ -142,23 +142,42 @@ class ReadOnly extends Base
         return $this->GetUrl("http://www.daniweb.com/api/members/{$memberId}/endorsements");
     }
 
-    // incomplete
-    public function GetMemberPosts($memberId, $postType, $page = null)
+    /**
+     * Get posts for a specific member ID, optionally filtered.
+     *
+     * @param int $memberId Member ID.
+     * @param null|string $postType Post type to filter on (optional).
+     * @param int|null $page Page number (optional).
+     * @return bool|string JSON result, false on error.
+     */
+    public function GetMemberPosts($memberId, $postType = null, $page = null)
     {
         if (!is_int($memberId) or ($memberId < 1))
         {
             return false;
         }
 
-        // http://www.daniweb.com/api/members/{:ID}/posts?filter=
+        $filter = in_array($postType, $this->postTypes) ? $postType : '';
+        $url = "http://www.daniweb.com/api/members/{$memberId}/posts";
+        if (!empty($filter))
+        {
+            $url .= "?filter={$filter}";
+        }
+
+        if (is_int($page) and ($page > 0))
+        {
+            $url .= (empty($filter) ? '?' : '&') . "page={$page}";
+        }
+
+        return $this->GetUrl($url);
     }
 
     /**
      * Get reputation comments for a specific member.
      *
      * @param int $memberId Member ID.
-     * @param int $page Page number (optional).
-     * @return mixed JSON result, false on error.
+     * @param int|null $page Page number (optional).
+     * @return bool|string JSON result, false on error.
      */
     public function GetMemberReputationComments($memberId, $page = null)
     {
@@ -170,7 +189,7 @@ class ReadOnly extends Base
         $url = "http://www.daniweb.com/api/members/{$memberId}/comments";
         if (is_int($page) and ($page > 0))
         {
-            $url .= '?page=' . $page;
+            $url .= "?page={$page}";
         }
         return $this->GetUrl($url);
     }
@@ -179,21 +198,21 @@ class ReadOnly extends Base
      * Get a list of members, or a list of specific members.
      *
      * @param mixed $members Member as string, member ID as int or array of int.
-     * @param int $page Page number (optional).
-     * @return mixed JSON result, false on error.
+     * @param int|null $page Page number (optional).
+     * @return bool|string JSON result, false on error.
      */
     public function GetMembers($members, $page = null)
     {
         $url = 'http://www.daniweb.com/api/members';
         if (is_string($members))
         {
-            $url .= '?username=' . $members;
+            $url .= "?username={$members}";
         }
         else
         {
             if (is_int($members))
             {
-                $url .= '/' . $members;
+                $url .= "/{$members}";
             }
             else if (is_array($members))
             {
@@ -210,7 +229,7 @@ class ReadOnly extends Base
 
             if (is_int($page) and ($page > 0))
             {
-                $url .= '?page=' . $page;
+                $url .= "?page={$page}";
             }
         }
         return $this->GetUrl($url);
@@ -220,8 +239,8 @@ class ReadOnly extends Base
      * Get reputation comments for a specific post.
      *
      * @param int $postId Post ID.
-     * @param int $page Page number (optional).
-     * @return mixed JSON result, false on error.
+     * @param int|null $page Page number (optional).
+     * @return bool|string JSON result, false on error.
      */
     public function GetPostReputationComments($postId, $page = null)
     {
@@ -233,7 +252,7 @@ class ReadOnly extends Base
         $url = "http://www.daniweb.com/api/posts/{$postId}/comments";
         if (is_int($page) and ($page > 0))
         {
-            $url .= '?page=' . $page;
+            $url .= "?page={$page}";
         }
         return $this->GetUrl($url);
     }
@@ -242,8 +261,8 @@ class ReadOnly extends Base
      * Get a list of posts, or a list of specific posts.
      *
      * @param mixed $postIds Post ID as int, or array of int.
-     * @param int $page Page number (optional).
-     * @return mixed JSON result, false on error.
+     * @param int|null $page Page number (optional).
+     * @return bool|string JSON result, false on error.
      */
     public function GetPosts($postIds = null, $page = null)
     {
@@ -270,7 +289,7 @@ class ReadOnly extends Base
 
         if (is_int($page) and ($page > 0))
         {
-            $url .= '?page=' . $page;
+            $url .= "?page={$page}";
         }
         return $this->GetUrl($url);
     }
@@ -279,8 +298,8 @@ class ReadOnly extends Base
      * Searches articles for the given query.
      *
      * @param string $query Search query.
-     * @param int $page Page number (optional).
-     * @return mixed JSON result, false on error.
+     * @param int|null $page Page number (optional).
+     * @return bool|string JSON result, false on error.
      */
     public function SearchArticles($query, $page = null)
     {
@@ -292,7 +311,7 @@ class ReadOnly extends Base
         $url = 'http://www.daniweb.com/api/articles/search?query=' . urlencode($query);
         if (is_int($page) and ($page > 0))
         {
-            $url .= '&page=' . $page;
+            $url .= "&page={$page}";
         }
         return $this->GetUrl($url);
     }
@@ -301,8 +320,8 @@ class ReadOnly extends Base
      * Searches members for the given member name.
      *
      * @param string $memberName Member name to search.
-     * @param int $page Page number (optional).
-     * @return mixed JSON result, false on error.
+     * @param int|null $page Page number (optional).
+     * @return bool|string JSON result, false on error.
      */
     public function SearchMembers($memberName, $page = null)
     {
@@ -314,7 +333,7 @@ class ReadOnly extends Base
         $url = 'http://www.daniweb.com/api/members/search?query=' . urlencode($memberName);
         if (is_int($page) and ($page > 0))
         {
-            $url .= '&page=' . $page;
+            $url .= "&page={$page}";
         }
         return $this->GetUrl($url);
     }
