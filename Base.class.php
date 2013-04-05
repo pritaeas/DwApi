@@ -20,7 +20,7 @@ class Base {
     /**
      * Get the list of supported article types.
      *
-     * @param bool $sorted Sort alphabetically, default true.
+     * @param bool $sorted Sort alphabetically (optional), default true.
      * @return array List of article types.
      */
     public function GetArticleTypes($sorted = true)
@@ -36,7 +36,7 @@ class Base {
     /**
      * Get the list of supported post types.
      *
-     * @param bool $sorted Sort alphabetically, default true.
+     * @param bool $sorted Sort alphabetically (optional), default true.
      * @return array List of post types.
      */
     public function GetPostTypes($sorted = true)
@@ -53,7 +53,7 @@ class Base {
      * Get an URL's page contents as a string.
      *
      * @param string $url URL to get.
-     * @return mixed URL page contents, false on error.
+     * @return bool|string URL page contents, false on error.
      */
     protected function GetUrl($url)
     {
