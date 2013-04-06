@@ -18,7 +18,7 @@ class DwApiRss extends DwApiBase
             $urlParts[] = $forumId;
         }
 
-        if (in_array($articleType, $this->articleTypes))
+        if ($this->IsArticleType($articleType))
         {
             $urlParts[] = $articleType;
         }

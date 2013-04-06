@@ -105,6 +105,39 @@ class DwApiBase {
     }
 
     /**
+     * Check if article type is valid.
+     *
+     * @param string $articleType Article type.
+     * @return bool True when valid, false otherwise.
+     */
+    protected function IsArticleType($articleType)
+    {
+        return in_array($articleType, $this->articleTypes);
+    }
+
+    /**
+     * Check if post type is valid.
+     *
+     * @param string $postType Post type.
+     * @return bool True when valid, false otherwise.
+     */
+    protected function IsPostType($postType)
+    {
+        return in_array($postType, $this->postTypes);
+    }
+
+    /**
+     * Check if relation type is valid.
+     *
+     * @param string $relationType Relation type.
+     * @return bool True when valid, false otherwise.
+     */
+    protected function IsRelationType($relationType)
+    {
+        return in_array($relationType, $this->relationTypes);
+    }
+
+    /**
      * Checks if the ID is a valid positive integer.
      *
      * @param mixed $id ID.

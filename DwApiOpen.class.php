@@ -16,6 +16,7 @@ class DwApiOpen extends DwApiBase
         }
 
         $url = "http://www.daniweb.com/api/articles/{$articleId}/posts";
+
         if ($this->IsValidId($page))
         {
             $url .= "?page={$page}";
@@ -122,6 +123,7 @@ class DwApiOpen extends DwApiBase
         }
 
         $url = "http://www.daniweb.com/api/forums/{$forumId}/posts";
+
         if ($this->IsValidId($page))
         {
             $url .= "?page={$page}";
@@ -163,7 +165,7 @@ class DwApiOpen extends DwApiBase
             $url .= '/' . implode(';', $forumIdList);
         }
 
-        if (is_string($relation) and in_array($relation, $this->relationTypes))
+        if ($this->IsRelationType($relation))
         {
             $url .= "/$relation";
         }
@@ -266,10 +268,9 @@ class DwApiOpen extends DwApiBase
 
         $url = "http://www.daniweb.com/api/members/{$memberId}/posts";
 
-        $filter = in_array($postType, $this->postTypes) ? $postType : '';
-        if (!empty($filter))
+        if ($this->IsPostType($postType))
         {
-            $url .= "?filter={$filter}";
+            $url .= "?filter={$postType}";
         }
 
         if ($this->IsValidId($page))
