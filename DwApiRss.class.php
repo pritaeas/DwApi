@@ -1,5 +1,5 @@
 <?php
-class Rss extends Base
+class DwApiRss extends DwApiBase
 {
     /**
      * Returns the RSS feed, optionally filtered by forum ID and/or article type.
@@ -12,14 +12,17 @@ class Rss extends Base
     {
         $urlParts = array ();
         $urlParts[] = 'http://www.daniweb.com/rss/pull';
-        if (is_int($forumId) and ($forumId > 0))
+
+        if ($this->IsValidId($forumId))
         {
             $urlParts[] = $forumId;
         }
+
         if (in_array($articleType, $this->articleTypes))
         {
             $urlParts[] = $articleType;
         }
+
         return $this->GetUrl(implode('/', $urlParts));
     }
 }

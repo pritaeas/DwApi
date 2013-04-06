@@ -1,5 +1,5 @@
 <?php
-class Base {
+class DwApiBase {
     /**
      * @var array List of supported article types.
      */
@@ -102,6 +102,17 @@ class Base {
             $result = file_get_contents($url);
         }
         return $result;
+    }
+
+    /**
+     * Checks if the ID is a valid positive integer.
+     *
+     * @param mixed $id ID.
+     * @return bool True if positive integer, false otherwise.
+     */
+    protected function IsValidId($id)
+    {
+        return is_int($id) and ($id > 0);
     }
 }
 ?>

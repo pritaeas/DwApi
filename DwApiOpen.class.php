@@ -1,5 +1,5 @@
 <?php
-class ReadOnly extends Base
+class DwApiOpen extends DwApiBase
 {
     /**
      * Get posts for a specific article.
@@ -10,16 +10,17 @@ class ReadOnly extends Base
      */
     public function GetArticlePosts($articleId, $page = null)
     {
-        if (!is_int($articleId) or ($articleId < 1))
+        if (!$this->IsValidId($articleId))
         {
             return false;
         }
 
         $url = "http://www.daniweb.com/api/articles/{$articleId}/posts";
-        if (is_int($page) and ($page > 0))
+        if ($this->IsValidId($page))
         {
             $url .= "?page={$page}";
         }
+
         return $this->GetUrl($url);
     }
 
@@ -35,7 +36,7 @@ class ReadOnly extends Base
         $url = "http://www.daniweb.com/api/articles";
 
         $articleIdList = array();
-        if (is_int($articleIds) and ($articleIds > 0))
+        if ($this->IsValidId($articleIds))
         {
             $articleIdList[] = $articleIds;
         }
@@ -43,7 +44,7 @@ class ReadOnly extends Base
         {
             foreach ($articleIds as $forumId)
             {
-                if (is_int($forumId) and ($forumId > 0))
+                if ($this->IsValidId($forumId))
                 {
                     $articleIdList[] = $forumId;
                 }
@@ -56,7 +57,7 @@ class ReadOnly extends Base
             $url .= "/{$articleIdString}";
         }
 
-        if (is_int($page) and ($page > 0))
+        if ($this->IsValidId($page))
         {
             $url .= "?page={$page}";
         }
@@ -75,7 +76,7 @@ class ReadOnly extends Base
     {
         $forumIdList = array();
 
-        if (is_int($forumIds) and ($forumIds > 0))
+        if ($this->IsValidId($forumIds))
         {
             $forumIdList[] = $forumIds;
         }
@@ -83,7 +84,7 @@ class ReadOnly extends Base
         {
             foreach ($forumIds as $forumId)
             {
-                if (is_int($forumId) and ($forumId > 0))
+                if ($this->IsValidId($forumId))
                 {
                     $forumIdList[] = $forumId;
                 }
@@ -97,7 +98,8 @@ class ReadOnly extends Base
 
         $forumIdString = implode(';', $forumIdList);
         $url = "http://www.daniweb.com/api/forums/{$forumIdString}/articles";
-        if (is_int($page) and ($page > 0))
+
+        if ($this->IsValidId($page))
         {
             $url .= "?page={$page}";
         }
@@ -114,16 +116,17 @@ class ReadOnly extends Base
      */
     public function GetForumPosts($forumId, $page = null)
     {
-        if (!is_int($forumId) or ($forumId < 1))
+        if (!$this->IsValidId($forumId))
         {
             return false;
         }
 
         $url = "http://www.daniweb.com/api/forums/{$forumId}/posts";
-        if (is_int($page) and ($page > 0))
+        if ($this->IsValidId($page))
         {
             $url .= "?page={$page}";
         }
+
         return $this->GetUrl($url);
     }
 
@@ -140,7 +143,7 @@ class ReadOnly extends Base
         $url = 'http://www.daniweb.com/api/forums';
 
         $forumIdList = array();
-        if (is_int($forumIds) and ($forumIds > 0))
+        if ($this->IsValidId($forumIds))
         {
             $forumIdList[] = $forumIds;
         }
@@ -148,12 +151,13 @@ class ReadOnly extends Base
         {
             foreach ($forumIds as $forumId)
             {
-                if (is_int($forumId) and ($forumId > 0))
+                if ($this->IsValidId($forumId))
                 {
                     $forumIdList[] = $forumId;
                 }
             }
         }
+
         if (count($forumIdList) > 0)
         {
             $url .= '/' . implode(';', $forumIdList);
@@ -180,7 +184,7 @@ class ReadOnly extends Base
      */
     public function GetMemberActivityPoints($memberId)
     {
-        if (!is_int($memberId) or ($memberId < 1))
+        if (!$this->IsValidId($memberId))
         {
             return false;
         }
@@ -198,7 +202,7 @@ class ReadOnly extends Base
     public function GetMemberArticles($memberIds, $page = null)
     {
         $memberIdList = array();
-        if (is_int($memberIds) and ($memberIds > 0))
+        if ($this->IsValidId($memberIds))
         {
             $memberIdList[] = $memberIds;
         }
@@ -206,7 +210,7 @@ class ReadOnly extends Base
         {
             foreach ($memberIds as $forumId)
             {
-                if (is_int($forumId) and ($forumId > 0))
+                if ($this->IsValidId($forumId))
                 {
                     $memberIdList[] = $forumId;
                 }
@@ -221,7 +225,7 @@ class ReadOnly extends Base
         $memberIdString = implode(';', $memberIdList);
         $url = "http://www.daniweb.com/api/members/{$memberIdString}/articles";
 
-        if (is_int($page) and ($page > 0))
+        if ($this->IsValidId($page))
         {
             $url .= "?page={$page}";
         }
@@ -237,7 +241,7 @@ class ReadOnly extends Base
      */
     public function GetMemberEndorsements($memberId)
     {
-        if (!is_int($memberId) or ($memberId < 1))
+        if (!$this->IsValidId($memberId))
         {
             return false;
         }
@@ -255,19 +259,20 @@ class ReadOnly extends Base
      */
     public function GetMemberPosts($memberId, $postType = null, $page = null)
     {
-        if (!is_int($memberId) or ($memberId < 1))
+        if (!$this->IsValidId($memberId))
         {
             return false;
         }
 
-        $filter = in_array($postType, $this->postTypes) ? $postType : '';
         $url = "http://www.daniweb.com/api/members/{$memberId}/posts";
+
+        $filter = in_array($postType, $this->postTypes) ? $postType : '';
         if (!empty($filter))
         {
             $url .= "?filter={$filter}";
         }
 
-        if (is_int($page) and ($page > 0))
+        if ($this->IsValidId($page))
         {
             $url .= (empty($filter) ? '?' : '&') . "page={$page}";
         }
@@ -284,36 +289,39 @@ class ReadOnly extends Base
      */
     public function GetMemberReputationComments($memberId, $page = null)
     {
-        if (!is_int($memberId) or ($memberId < 1))
+        if (!$this->IsValidId($memberId))
         {
             return false;
         }
 
         $url = "http://www.daniweb.com/api/members/{$memberId}/comments";
-        if (is_int($page) and ($page > 0))
+
+        if ($this->IsValidId($page))
         {
             $url .= "?page={$page}";
         }
+
         return $this->GetUrl($url);
     }
 
     /**
      * Get a list of members, or a list of specific members.
      *
-     * @param mixed $members Member as string, member ID as int or array of int.
+     * @param mixed $members Member as string, member ID as int or array of int (optional).
      * @param int|null $page Page number (optional).
      * @return bool|string JSON result, false on error.
      */
     public function GetMembers($members, $page = null)
     {
         $url = 'http://www.daniweb.com/api/members';
+
         if (is_string($members))
         {
             $url .= "?username={$members}";
         }
         else
         {
-            if (is_int($members))
+            if ($this->IsValidId($members))
             {
                 $url .= "/{$members}";
             }
@@ -322,7 +330,7 @@ class ReadOnly extends Base
                 $memberList = array ();
                 foreach ($members as $member)
                 {
-                    if (is_int($member))
+                    if ($this->IsValidId($member))
                     {
                         $memberList[] = $member;
                     }
@@ -330,11 +338,12 @@ class ReadOnly extends Base
                 $url .= implode(';', $memberList);
             }
 
-            if (is_int($page) and ($page > 0))
+            if ($this->IsValidId($page))
             {
                 $url .= "?page={$page}";
             }
         }
+
         return $this->GetUrl($url);
     }
 
@@ -347,16 +356,18 @@ class ReadOnly extends Base
      */
     public function GetPostReputationComments($postId, $page = null)
     {
-        if (!is_int($postId) or ($postId < 1))
+        if (!$this->IsValidId($postId))
         {
             return false;
         }
 
         $url = "http://www.daniweb.com/api/posts/{$postId}/comments";
-        if (is_int($page) and ($page > 0))
+
+        if ($this->IsValidId($page))
         {
             $url .= "?page={$page}";
         }
+
         return $this->GetUrl($url);
     }
 
@@ -370,30 +381,34 @@ class ReadOnly extends Base
     public function GetPosts($postIds = null, $page = null)
     {
         $url = "http://www.daniweb.com/api/posts";
-        if (is_int($postIds) and ($postIds > 0))
+
+        if ($this->IsValidId($postIds))
         {
             $url .= "/{$postIds}";
         }
         else if (is_array($postIds))
         {
             $postIdList = array();
+
             foreach ($postIds as $postId)
             {
-                if (is_int($postId) and ($postId > 0))
+                if ($this->IsValidId($postId))
                 {
                     $postIdList[] = $postId;
                 }
             }
+
             if (count($postIdList) > 0)
             {
                 $url .= '/' . implode(';', $postIdList);
             }
         }
 
-        if (is_int($page) and ($page > 0))
+        if ($this->IsValidId($page))
         {
             $url .= "?page={$page}";
         }
+
         return $this->GetUrl($url);
     }
 
@@ -412,10 +427,12 @@ class ReadOnly extends Base
         }
 
         $url = 'http://www.daniweb.com/api/articles/search?query=' . urlencode($query);
-        if (is_int($page) and ($page > 0))
+
+        if ($this->IsValidId($page))
         {
             $url .= "&page={$page}";
         }
+
         return $this->GetUrl($url);
     }
 
@@ -434,10 +451,12 @@ class ReadOnly extends Base
         }
 
         $url = 'http://www.daniweb.com/api/members/search?query=' . urlencode($memberName);
-        if (is_int($page) and ($page > 0))
+
+        if ($this->IsValidId($page))
         {
             $url .= "&page={$page}";
         }
+
         return $this->GetUrl($url);
     }
 }
