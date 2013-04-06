@@ -23,11 +23,45 @@ class ReadOnly extends Base
         return $this->GetUrl($url);
     }
 
-    // incomplete
-    public function GetArticles($articleIds, $articleType, $orderBy, $page = null)
+    /**
+     * Get a list of (specific) articles.
+     *
+     * @param mixed $articleIds Article ID as int, or array of int (optional).
+     * @param int|null $page Page number (optional).
+     * @return bool|string JSON result, false on error.
+     */
+    public function GetArticles($articleIds = null, $page = null)
     {
-        // http://www.daniweb.com/api/articles
-        // http://www.daniweb.com/api/articles/{:IDS}
+        $url = "http://www.daniweb.com/api/articles";
+
+        $articleIdList = array();
+        if (is_int($articleIds) and ($articleIds > 0))
+        {
+            $articleIdList[] = $articleIds;
+        }
+        else if (is_array($articleIds))
+        {
+            foreach ($articleIds as $forumId)
+            {
+                if (is_int($forumId) and ($forumId > 0))
+                {
+                    $articleIdList[] = $forumId;
+                }
+            }
+        }
+
+        if (count($articleIdList) > 0)
+        {
+            $articleIdString = implode(';', $articleIdList);
+            $url .= "/{$articleIdString}";
+        }
+
+        if (is_int($page) and ($page > 0))
+        {
+            $url .= "?page={$page}";
+        }
+
+        return $this->GetUrl($url);
     }
 
     /**
@@ -154,10 +188,45 @@ class ReadOnly extends Base
         return $this->GetUrl("http://www.daniweb.com/api/members/{$memberId}/activities");
     }
 
-    // incomplete
-    public function GetMemberArticles($memberIds, $forumId = null, $page = null)
+    /**
+     * Get a list of articles for a specific member, or members.
+     *
+     * @param mixed $memberIds Member ID as int, or array of int.
+     * @param int|null $page Page number (optional).
+     * @return bool|string JSON result, false on error.
+     */
+    public function GetMemberArticles($memberIds, $page = null)
     {
-        // http://www.daniweb.com/api/members/{:IDS}/articles?forum_id=
+        $memberIdList = array();
+        if (is_int($memberIds) and ($memberIds > 0))
+        {
+            $memberIdList[] = $memberIds;
+        }
+        else if (is_array($memberIds))
+        {
+            foreach ($memberIds as $forumId)
+            {
+                if (is_int($forumId) and ($forumId > 0))
+                {
+                    $memberIdList[] = $forumId;
+                }
+            }
+        }
+
+        if (count($memberIdList) < 1)
+        {
+            return false;
+        }
+
+        $memberIdString = implode(';', $memberIdList);
+        $url = "http://www.daniweb.com/api/members/{$memberIdString}/articles";
+
+        if (is_int($page) and ($page > 0))
+        {
+            $url .= "?page={$page}";
+        }
+
+        return $this->GetUrl($url);
     }
 
     /**
