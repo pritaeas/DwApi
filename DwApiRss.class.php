@@ -8,22 +8,21 @@ class DwApiRss extends DwApiBase
      * @param null|string $articleType Article type to filter on (optional).
      * @return bool|string RSS feed, false on error.
      */ 
-    public function GetFeed($forumId, $articleType = null)
+    public function GetFeed($forumId = null, $articleType = null)
     {
-        $urlParts = array ();
-        $urlParts[] = 'http://www.daniweb.com/rss/pull';
+        $url = 'http://www.daniweb.com/rss/pull';
 
         if ($this->IsValidId($forumId))
         {
-            $urlParts[] = $forumId;
+            $url .= "/{$forumId}";
         }
 
         if ($this->IsArticleType($articleType))
         {
-            $urlParts[] = $articleType;
+            $url .= "/{$articleType}";
         }
 
-        return $this->GetUrl(implode('/', $urlParts));
+        return $this->GetUrl($url);
     }
 }
 ?>
