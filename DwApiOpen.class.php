@@ -31,25 +31,9 @@ class DwApiOpen extends DwApiBase
     {
         $url = "http://www.daniweb.com/api/articles";
 
-        $articleIdList = array();
-        if ($this->IsValidId($articleIds))
+        $articleIdString = $this->IdsToString($articleIds);
+        if (!empty($articleIdString))
         {
-            $articleIdList[] = $articleIds;
-        }
-        else if (is_array($articleIds))
-        {
-            foreach ($articleIds as $forumId)
-            {
-                if ($this->IsValidId($forumId))
-                {
-                    $articleIdList[] = $forumId;
-                }
-            }
-        }
-
-        if (count($articleIdList) > 0)
-        {
-            $articleIdString = implode(';', $articleIdList);
             $url .= "/{$articleIdString}";
         }
 
@@ -67,29 +51,12 @@ class DwApiOpen extends DwApiBase
      */
     public function GetForumArticles($forumIds, $page = null)
     {
-        $forumIdList = array();
-
-        if ($this->IsValidId($forumIds))
-        {
-            $forumIdList[] = $forumIds;
-        }
-        else if (is_array($forumIds))
-        {
-            foreach ($forumIds as $forumId)
-            {
-                if ($this->IsValidId($forumId))
-                {
-                    $forumIdList[] = $forumId;
-                }
-            }
-        }
-
-        if (count($forumIdList) < 1)
+        $forumIdString = $this->IdsToString($forumIds);
+        if (empty($forumIdString))
         {
             return false;
         }
 
-        $forumIdString = implode(';', $forumIdList);
         $url = "http://www.daniweb.com/api/forums/{$forumIdString}/articles" . $this->GetPageParameter($page);
 
         return $this->GetUrl($url);
@@ -126,30 +93,15 @@ class DwApiOpen extends DwApiBase
     {
         $url = 'http://www.daniweb.com/api/forums';
 
-        $forumIdList = array();
-        if ($this->IsValidId($forumIds))
+        $forumIdString = $this->IdsToString($forumIds);
+        if (!empty($forumIdString))
         {
-            $forumIdList[] = $forumIds;
-        }
-        else if (is_array($forumIds))
-        {
-            foreach ($forumIds as $forumId)
-            {
-                if ($this->IsValidId($forumId))
-                {
-                    $forumIdList[] = $forumId;
-                }
-            }
-        }
-
-        if (count($forumIdList) > 0)
-        {
-            $url .= '/' . implode(';', $forumIdList);
+            $url .= "/{$forumIdString}";
         }
 
         if ($this->IsRelationType($relation))
         {
-            $url .= "/$relation";
+            $url .= "/{$relation}";
         }
 
         if (is_bool($includeSelf))
@@ -185,28 +137,12 @@ class DwApiOpen extends DwApiBase
      */
     public function GetMemberArticles($memberIds, $page = null)
     {
-        $memberIdList = array();
-        if ($this->IsValidId($memberIds))
-        {
-            $memberIdList[] = $memberIds;
-        }
-        else if (is_array($memberIds))
-        {
-            foreach ($memberIds as $forumId)
-            {
-                if ($this->IsValidId($forumId))
-                {
-                    $memberIdList[] = $forumId;
-                }
-            }
-        }
-
-        if (count($memberIdList) < 1)
+        $memberIdString = $this->IdsToString($memberIds);
+        if (empty($memberIdString))
         {
             return false;
         }
 
-        $memberIdString = implode(';', $memberIdList);
         $url = "http://www.daniweb.com/api/members/{$memberIdString}/articles" . $this->GetPageParameter($page);
 
         return $this->GetUrl($url);
@@ -291,24 +227,8 @@ class DwApiOpen extends DwApiBase
         }
         else
         {
-            if ($this->IsValidId($members))
-            {
-                $url .= "/{$members}";
-            }
-            else if (is_array($members))
-            {
-                $memberList = array ();
-                foreach ($members as $member)
-                {
-                    if ($this->IsValidId($member))
-                    {
-                        $memberList[] = $member;
-                    }
-                }
-                $url .= implode(';', $memberList);
-            }
-
-            $url .= $this->GetPageParameter($page);
+            $memberIdString = $this->IdsToString($members);
+            $url .= (empty($memberIdString) ? '' : "/{$memberIdString}") . $this->GetPageParameter($page);
         }
 
         return $this->GetUrl($url);
@@ -344,29 +264,8 @@ class DwApiOpen extends DwApiBase
     {
         $url = "http://www.daniweb.com/api/posts";
 
-        if ($this->IsValidId($postIds))
-        {
-            $url .= "/{$postIds}";
-        }
-        else if (is_array($postIds))
-        {
-            $postIdList = array();
-
-            foreach ($postIds as $postId)
-            {
-                if ($this->IsValidId($postId))
-                {
-                    $postIdList[] = $postId;
-                }
-            }
-
-            if (count($postIdList) > 0)
-            {
-                $url .= '/' . implode(';', $postIdList);
-            }
-        }
-
-        $url .= $this->GetPageParameter($page);
+        $postIdString = $this->IdsToString($postIds);
+        $url .= (empty($postIdString) ? '' : "/{$postIdString}") . $this->GetPageParameter($page);
 
         return $this->GetUrl($url);
     }

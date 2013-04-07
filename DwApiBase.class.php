@@ -124,6 +124,35 @@ class DwApiBase {
     }
 
     /**
+     * Converts an array of ID's to a separated string.
+     *
+     * @param mixed $ids ID as int, or array of int.
+     * @param string $separator Separator (optional), default ';'.
+     * @return string Separated string of ID's, or empty string.
+     */
+    protected function IdsToString($ids, $separator = ';')
+    {
+        $idList = array();
+
+        if ($this->IsValidId($ids))
+        {
+            $idList[] = $ids;
+        }
+        else if (is_array($ids))
+        {
+            foreach ($ids as $id)
+            {
+                if ($this->IsValidId($id))
+                {
+                    $idList[] = $id;
+                }
+            }
+        }
+
+        return (count($idList) > 0) ? implode($separator, $idList) : '';
+    }
+
+    /**
      * Check if article type is valid.
      *
      * @param string $articleType Article type.
