@@ -74,6 +74,25 @@ class DwApiBase {
     }
 
     /**
+     * Builds the query parameter for a specific page.
+     *
+     * @param int $page Page number.
+     * @param string $separator Parameter separator (optional), default '?'.
+     * @return string Query parameter, or empty string.
+     */
+    protected function GetPageParameter($page, $separator = '?')
+    {
+        $result = '';
+
+        if ($this->IsValidId($page))
+        {
+            $result .= "{$separator}page={$page}";
+        }
+
+        return $result;
+    }
+
+    /**
      * Get an URL's page contents as a string.
      *
      * @param string $url URL to get.

@@ -15,12 +15,7 @@ class DwApiOpen extends DwApiBase
             return false;
         }
 
-        $url = "http://www.daniweb.com/api/articles/{$articleId}/posts";
-
-        if ($this->IsValidId($page))
-        {
-            $url .= "?page={$page}";
-        }
+        $url = "http://www.daniweb.com/api/articles/{$articleId}/posts" . $this->GetPageParameter($page);
 
         return $this->GetUrl($url);
     }
@@ -58,10 +53,7 @@ class DwApiOpen extends DwApiBase
             $url .= "/{$articleIdString}";
         }
 
-        if ($this->IsValidId($page))
-        {
-            $url .= "?page={$page}";
-        }
+        $url .= $this->GetPageParameter($page);
 
         return $this->GetUrl($url);
     }
@@ -98,12 +90,7 @@ class DwApiOpen extends DwApiBase
         }
 
         $forumIdString = implode(';', $forumIdList);
-        $url = "http://www.daniweb.com/api/forums/{$forumIdString}/articles";
-
-        if ($this->IsValidId($page))
-        {
-            $url .= "?page={$page}";
-        }
+        $url = "http://www.daniweb.com/api/forums/{$forumIdString}/articles" . $this->GetPageParameter($page);
 
         return $this->GetUrl($url);
     }
@@ -122,12 +109,7 @@ class DwApiOpen extends DwApiBase
             return false;
         }
 
-        $url = "http://www.daniweb.com/api/forums/{$forumId}/posts";
-
-        if ($this->IsValidId($page))
-        {
-            $url .= "?page={$page}";
-        }
+        $url = "http://www.daniweb.com/api/forums/{$forumId}/posts" . $this->GetPageParameter($page);
 
         return $this->GetUrl($url);
     }
@@ -172,7 +154,7 @@ class DwApiOpen extends DwApiBase
 
         if (is_bool($includeSelf))
         {
-            $url .= '?' . ($includeSelf ? 'true' : 'false');
+            $url .= '?include_self=' . ($includeSelf ? 'true' : 'false');
         }
 
         return $this->GetUrl($url);
@@ -225,12 +207,7 @@ class DwApiOpen extends DwApiBase
         }
 
         $memberIdString = implode(';', $memberIdList);
-        $url = "http://www.daniweb.com/api/members/{$memberIdString}/articles";
-
-        if ($this->IsValidId($page))
-        {
-            $url .= "?page={$page}";
-        }
+        $url = "http://www.daniweb.com/api/members/{$memberIdString}/articles" . $this->GetPageParameter($page);
 
         return $this->GetUrl($url);
     }
@@ -273,10 +250,7 @@ class DwApiOpen extends DwApiBase
             $url .= "?filter={$postType}";
         }
 
-        if ($this->IsValidId($page))
-        {
-            $url .= (empty($filter) ? '?' : '&') . "page={$page}";
-        }
+        $url .= $this->GetPageParameter($page, $this->IsPostType($postType) ? '&' : '?');
 
         return $this->GetUrl($url);
     }
@@ -295,12 +269,7 @@ class DwApiOpen extends DwApiBase
             return false;
         }
 
-        $url = "http://www.daniweb.com/api/members/{$memberId}/comments";
-
-        if ($this->IsValidId($page))
-        {
-            $url .= "?page={$page}";
-        }
+        $url = "http://www.daniweb.com/api/members/{$memberId}/comments" . $this->GetPageParameter($page);
 
         return $this->GetUrl($url);
     }
@@ -339,10 +308,7 @@ class DwApiOpen extends DwApiBase
                 $url .= implode(';', $memberList);
             }
 
-            if ($this->IsValidId($page))
-            {
-                $url .= "?page={$page}";
-            }
+            $url .= $this->GetPageParameter($page);
         }
 
         return $this->GetUrl($url);
@@ -362,12 +328,7 @@ class DwApiOpen extends DwApiBase
             return false;
         }
 
-        $url = "http://www.daniweb.com/api/posts/{$postId}/comments";
-
-        if ($this->IsValidId($page))
-        {
-            $url .= "?page={$page}";
-        }
+        $url = "http://www.daniweb.com/api/posts/{$postId}/comments" . $this->GetPageParameter($page);
 
         return $this->GetUrl($url);
     }
@@ -405,10 +366,7 @@ class DwApiOpen extends DwApiBase
             }
         }
 
-        if ($this->IsValidId($page))
-        {
-            $url .= "?page={$page}";
-        }
+        $url .= $this->GetPageParameter($page);
 
         return $this->GetUrl($url);
     }
@@ -427,12 +385,8 @@ class DwApiOpen extends DwApiBase
             return false;
         }
 
-        $url = 'http://www.daniweb.com/api/articles/search?query=' . urlencode($query);
-
-        if ($this->IsValidId($page))
-        {
-            $url .= "&page={$page}";
-        }
+        $url = 'http://www.daniweb.com/api/articles/search?query=' . urlencode($query) .
+            $this->GetPageParameter($page, '&');
 
         return $this->GetUrl($url);
     }
@@ -451,12 +405,8 @@ class DwApiOpen extends DwApiBase
             return false;
         }
 
-        $url = 'http://www.daniweb.com/api/members/search?query=' . urlencode($memberName);
-
-        if ($this->IsValidId($page))
-        {
-            $url .= "&page={$page}";
-        }
+        $url = 'http://www.daniweb.com/api/members/search?query=' . urlencode($memberName) .
+            $this->GetPageParameter($page, '&');
 
         return $this->GetUrl($url);
     }
