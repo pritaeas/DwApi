@@ -65,12 +65,16 @@ class DwApiOAuth extends DwApiOpen
      */
     protected function GetUrl($path, $getParameters = null, $postParameters = null)
     {
-        if (!is_array($getParameters) or !isset($getParameters['access_token']))
+        if (!is_array($getParameters))
         {
             $getParameters = array ('access_token' => $this->accessToken);
         }
+        else if (!isset($getParameters['access_token']))
+        {
+            $getParameters['access_token'] = $this->accessToken;
+        }
 
-        parent::GetUrl($path, $getParameters);
+        parent::GetUrl($path, $getParameters, $postParameters);
     }
 }
 ?>
