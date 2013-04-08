@@ -1,6 +1,11 @@
 <?php
 class DwApiBase {
     /**
+     * @var null|string Access token.
+     */
+    protected $accessToken = null;
+
+    /**
      * @var array List of supported article types.
      * False indicates supported in open API, true for OAuth API.
      */
@@ -49,7 +54,7 @@ class DwApiBase {
     {
         $result = array();
 
-        if ($openOnly)
+        if (is_bool($openOnly) and $openOnly)
         {
             foreach ($this->articleTypes as $articleType => $articleOpen)
             {
@@ -64,7 +69,7 @@ class DwApiBase {
             $result = array_keys($this->articleTypes);
         }
 
-        if ($sorted)
+        if (is_bool($sorted) and $sorted)
         {
             sort($result);
         }
@@ -82,7 +87,7 @@ class DwApiBase {
     {
         $result = $this->postTypes;
 
-        if ($sorted)
+        if (is_bool($sorted) and $sorted)
         {
             sort($result);
         }
@@ -100,7 +105,7 @@ class DwApiBase {
     {
         $result = $this->relationTypes;
 
-        if ($sorted)
+        if (is_bool($sorted) and $sorted)
         {
             sort($result);
         }
