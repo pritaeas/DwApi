@@ -1,8 +1,13 @@
 <?php
-// todo override DwApiOpen
-// todo override GetUrl to append access token
-class DwApiOAuth extends DwApiBase
+class DwApiOAuth extends DwApiOpen
 {
+    protected $accessToken;
+
+    function __construct($accessToken)
+    {
+        $this->accessToken = $accessToken;
+    }
+
     public function GetArticles($articleIds = null, $page = null)
     {
         return false;
@@ -39,10 +44,33 @@ class DwApiOAuth extends DwApiBase
         return false;
     }
 
+    /**
+     * Get logged in user details.
+     *
+     * @return string JSON result, false on error.
+     */
     public function WhoAmI()
     {
-        // http://www.daniweb.com/api/me?access_token={ACCESS_TOKEN}
-        return false;
+        return $this->GetUrl('api/me');
+    }
+
+    /**
+     * Get the REST path contents as a string.
+     * Sets additional access token.
+     *
+     * @param string $path REST path to use.
+     * @param array|null $getParameters GET parameters (optional).
+     * @param array|null $postParameters POST parameters (optional).
+     * @return bool|string URL page contents, false on error.
+     */
+    protected function GetUrl($path, $getParameters = null, $postParameters = null)
+    {
+        if (!is_array($getParameters) or !isset($getParameters['access_token']))
+        {
+            $getParameters = array ('access_token' => $this->accessToken);
+        }
+
+        parent::GetUrl($path, $getParameters);
     }
 }
 ?>

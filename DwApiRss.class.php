@@ -10,7 +10,7 @@ class DwApiRss extends DwApiBase
      */ 
     public function GetFeed($forumId = null, $articleType = null)
     {
-        $url = 'http://www.daniweb.com/rss/pull';
+        $url = '/rss/pull';
 
         if ($this->IsValidId($forumId))
         {

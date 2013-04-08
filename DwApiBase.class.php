@@ -20,6 +20,8 @@ class DwApiBase {
         'watching' => true
     );
 
+    protected $baseUrl = 'http://www.daniweb.com';
+
     /**
      * @var array List of supported post types.
      */
@@ -79,10 +81,12 @@ class DwApiBase {
     public function GetPostTypes($sorted = true)
     {
         $result = $this->postTypes;
+
         if ($sorted)
         {
             sort($result);
         }
+
         return $result;
     }
 
@@ -95,10 +99,12 @@ class DwApiBase {
     public function GetRelationTypes($sorted = true)
     {
         $result = $this->relationTypes;
+
         if ($sorted)
         {
             sort($result);
         }
+
         return $result;
     }
 
@@ -106,30 +112,38 @@ class DwApiBase {
      * Builds the query parameter for a specific page.
      *
      * @param int $page Page number.
-     * @param string $separator Parameter separator (optional), default '?'.
-     * @return string Query parameter, or empty string.
+     * @return array Query parameter, or empty array.
      */
-    protected function GetPageParameter($page, $separator = '?')
+    protected function GetPageParameter($page)
     {
-        $result = '';
+        $result = array();
 
         if ($this->IsValidId($page))
         {
-            $result .= "{$separator}page={$page}";
+            $result = array ('page' => $page);
         }
 
         return $result;
     }
 
     /**
-     * Get an URL's page contents as a string.
+     * Get the REST path contents as a string.
      *
-     * @param string $url URL to get.
+     * @param string $path REST path to use.
+     * @param array|null $getParameters GET parameters (optional).
+     * @param array|null $postParameters POST parameters (optional).
      * @return bool|string URL page contents, false on error.
      */
-    protected function GetUrl($url)
+    protected function GetUrl($path, $getParameters = null, $postParameters = null)
     {
         $result = false;
+        $url = $this->baseUrl . $path;
+
+        if (is_array($getParameters) and (count($getParameters) > 0))
+        {
+            $url .= '?' . http_build_query($getParameters);
+        }
+
         if (extension_loaded('curl'))
         {
             $ch = curl_init();
@@ -137,6 +151,12 @@ class DwApiBase {
             {
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                if (is_array($postParameters) and (count($postParameters) > 0))
+                {
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $postParameters);
+                }
+
                 $curlResult = curl_exec($ch);
                 if ($curlResult)
                 {
@@ -149,6 +169,7 @@ class DwApiBase {
         {
             $result = file_get_contents($url);
         }
+
         return $result;
     }
 
