@@ -1,4 +1,6 @@
 <?php
+include 'DwApiBase.class.php';
+
 class DwApiRss extends DwApiBase
 {
     /**

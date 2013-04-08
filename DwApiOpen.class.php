@@ -1,5 +1,7 @@
 <?php
-class DwApiOpen extends DwApiBase
+include 'DwApiRss.class.php';
+
+class DwApiOpen extends DwApiRss
 {
     /**
      * Get posts for a specific article.

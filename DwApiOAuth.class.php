@@ -1,4 +1,6 @@
 <?php
+include 'DwApiOpen.class.php';
+
 class DwApiOAuth extends DwApiOpen
 {
     protected $accessToken;
