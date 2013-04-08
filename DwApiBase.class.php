@@ -2,11 +2,22 @@
 class DwApiBase {
     /**
      * @var array List of supported article types.
+     * False indicates supported in open API, true for OAuth API.
      */
     protected $articleTypes = array
     (
-        'unanswered', 'solved', 'threads', 'news', 'reviews',
-        'interviews', 'tutorials', 'code', 'whitepapers'
+        'unanswered' => false,
+        'solved' => false,
+        'threads' => false,
+        'news' => false,
+        'reviews' => false,
+        'interviews' => false,
+        'tutorials' => false,
+        'code' => false,
+        'whitepapers' => false,
+        'recommended' => true,
+        'viewed' => true,
+        'watching' => true
     );
 
     /**
@@ -28,16 +39,34 @@ class DwApiBase {
     /**
      * Get the list of supported article types.
      *
+     * @param bool $openOnly Show only valid types for the open API (optional), default true.
      * @param bool $sorted Sort alphabetically (optional), default true.
      * @return array List of article types.
      */
-    public function GetArticleTypes($sorted = true)
+    public function GetArticleTypes($openOnly = true, $sorted = true)
     {
-        $result = $this->articleTypes;
+        $result = array();
+
+        if ($openOnly)
+        {
+            foreach ($this->articleTypes as $articleType => $articleOpen)
+            {
+                if ($articleOpen)
+                {
+                    $result[] = $articleType;
+                }
+            }
+        }
+        else
+        {
+            $result = array_keys($this->articleTypes);
+        }
+
         if ($sorted)
         {
             sort($result);
         }
+
         return $result;
     }
 
@@ -156,11 +185,13 @@ class DwApiBase {
      * Check if article type is valid.
      *
      * @param string $articleType Article type.
+     * @param bool $openOnly Use only types for the open API (optional), default true.
      * @return bool True when valid, false otherwise.
      */
-    protected function IsArticleType($articleType)
+    protected function IsArticleType($articleType, $openOnly = true)
     {
-        return in_array($articleType, $this->articleTypes);
+        $articleTypes = $this->GetArticleTypes($openOnly);
+        return in_array($articleType, $articleTypes);
     }
 
     /**
