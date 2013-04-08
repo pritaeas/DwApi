@@ -74,7 +74,7 @@ class DwApiOAuth extends DwApiOpen
             $getParameters['access_token'] = $this->accessToken;
         }
 
-        parent::GetUrl($path, $getParameters, $postParameters);
+        return parent::GetUrl($path, $getParameters, $postParameters);
     }
 }
 ?>
