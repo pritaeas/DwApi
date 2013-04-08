@@ -3,53 +3,75 @@ include 'DwApiOpen.class.php';
 
 class DwApiOAuth extends DwApiOpen
 {
-    protected $accessToken;
-
+    /**
+     * @param string $accessToken Access token.
+     */
     function __construct($accessToken)
     {
-        $this->accessToken = $accessToken;
+        $this->accessToken = (is_string($accessToken) and !empty($accessToken)) ? $accessToken : null;
     }
 
-    public function GetArticles($articleIds = null, $page = null)
-    {
-        return false;
-    }
-
-    public function GetForumArticles($forumIds, $page = null)
-    {
-        return false;
-    }
-
-    public function GetMemberArticles($memberIds, $page = null)
-    {
-        return false;
-    }
-
+    /**
+     * Get private messages for the logged in user.
+     *
+     * @param bool $inbox Inbox when true, outbox when false.
+     * @return bool|string JSON result, false on error.
+     */
     public function GetPrivateMessages($inbox = true)
     {
-        // http://www.daniweb.com/api/me/inbox?access_token={ACCESS_TOKEN}
-        // http://www.daniweb.com/api/me/outbox?access_token={ACCESS_TOKEN}
-        return false;
+        return $this->GetUrl('/api/me/' . ((is_bool($inbox) and $inbox) ? 'inbox' : 'outbox'));
     }
 
-    public function VotePost($postId, $upVote = true)
+    /**
+     * Upvote or downvote a post.
+     *
+     * @param int|null $postId Post ID (optional).
+     * @param bool $upVote Upvote when true, downvote when false.
+     * @return bool|string JSON result, false on error.
+     */
+    public function VotePost($postId = null, $upVote = true)
     {
-        // http://www.daniweb.com/api/posts/vote
-        // http://www.daniweb.com/api/posts/{:ID}/vote?access_token={ACCESS_TOKEN}
-        return false;
+        if ($this->IsValidId($postId))
+        {
+            $url = "/api/posts/{$postId}/vote";
+        }
+        else
+        {
+            $url = '/api/posts/vote';
+        }
+
+        $getParameters = array ('vote' => ((is_bool($upVote) and $upVote) ? 1 : -1));
+
+        return $this->GetUrl($url, $getParameters);
     }
 
-    public function WatchArticle($articleId, $watch = true)
+    /**
+     * Watch or unwatch an article.
+     *
+     * @param int|null $articleId Article ID (optional).
+     * @param bool $watch Watch the article when true, unwatch when false.
+     * @return bool|string JSON result, false on error.
+     */
+    public function WatchArticle($articleId = null, $watch = true)
     {
-        // http://www.daniweb.com/api/articles/watch
-        // http://www.daniweb.com/api/articles/{:ID}/watch?access_token={ACCESS_TOKEN}
-        return false;
+        if ($this->IsValidId($articleId))
+        {
+            $url = "/api/articles/{$articleId}/watch";
+        }
+        else
+        {
+            $url = '/api/articles/watch';
+        }
+
+        $getParameters = (is_bool($watch) and $watch) ? array () : array ('remove' => true);
+
+        return $this->GetUrl($url, $getParameters);
     }
 
     /**
      * Get logged in user details.
      *
-     * @return string JSON result, false on error.
+     * @return bool|string JSON result, false on error.
      */
     public function WhoAmI()
     {
