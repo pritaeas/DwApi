@@ -6,6 +6,7 @@ class DwApiRss extends DwApiBase
     /**
      * Returns the RSS feed, optionally filtered by forum ID and/or article type.
      * Invalid forum ID's and article types will be ignored.
+     * Items in the feed will be no older than 90 days, and no more than 100 items.
      *
      * @param int|null $forumId Forum ID (optional).
      * @param null|string $articleType Article type to filter on (optional).
