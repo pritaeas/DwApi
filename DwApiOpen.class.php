@@ -281,7 +281,10 @@ class DwApiOpen extends DwApiRss
             return false;
         }
 
-        return $this->GetUrl('/api/articles/search?query=' . urlencode($query), $this->GetPageParameter($page));
+        $getParameters = array ('query' => urlencode($query));
+        $getParameters = array_merge($getParameters, $this->GetPageParameter($page));
+
+        return $this->GetUrl('/api/articles/search', $getParameters);
     }
 
     /**
@@ -298,7 +301,10 @@ class DwApiOpen extends DwApiRss
             return false;
         }
 
-        return $this->GetUrl('/api/members/search?query=' . urlencode($memberName), $this->GetPageParameter($page));
+        $getParameters = array ('query' => urlencode($memberName));
+        $getParameters = array_merge($getParameters, $this->GetPageParameter($page));
+
+        return $this->GetUrl('/api/members/search', $getParameters);
     }
 }
 ?>

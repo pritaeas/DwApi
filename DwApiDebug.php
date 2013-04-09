@@ -53,53 +53,53 @@ if ($testRss)                                                   // DwApiRss
 
 if ($testOpen)                                                  // DwApiOpen
 {
-    $result = $dwApi->GetArticlePosts(451816);
+    $result = $dwApi->GetArticlePosts(451816);                  // posts for article 451816
 
-    $result = $dwApi->GetArticles();
+    $result = $dwApi->GetArticles();                            // list articles, 30 per page
 
-    $result = $dwApi->GetForumArticles(17);
+    $result = $dwApi->GetForumArticles(17);                     // articles for forum 17 (php), 30 per page
 
-    $result = $dwApi->GetForumPosts(17);
+    $result = $dwApi->GetForumPosts(17);                        // posts for forum 17, 20 per page
 
-    $result = $dwApi->GetForums();
+    $result = $dwApi->GetForums();                              // list forums
 
-    $result = $dwApi->GetMemberActivityPoints(94719);
+    $result = $dwApi->GetMemberActivityPoints(94719);           // activity for member 94719 (pritaeas)
 
-    $result = $dwApi->GetMemberArticles(94719);
+    $result = $dwApi->GetMemberArticles(94719);                 // articles for member 94719, 30 per page
 
-    $result = $dwApi->GetMemberEndorsements(94719);
+    $result = $dwApi->GetMemberEndorsements(94719);             // endorsements for member 94719
 
-    $result = $dwApi->GetMemberPosts(94719);
+    $result = $dwApi->GetMemberPosts(94719);                    // posts for member 94719, 20 per page
 
-    $result = $dwApi->GetMemberReputationComments(94719);
+    $result = $dwApi->GetMemberReputationComments(94719);       // reputation for member 94719, 30 per page
 
-    $result = $dwApi->GetMembers();
+    $result = $dwApi->GetMembers();                             // list members, 50 per page
 
-    $result = $dwApi->GetPostReputationComments(1957463);
+    $result = $dwApi->GetPostReputationComments(1957463);       // reputation comments for post 1957463
 
-    $result = $dwApi->GetPosts();
+    $result = $dwApi->GetPosts();                               // list posts, 20 per page
 
-    $result = $dwApi->SearchArticles('daniweb-api');
+    $result = $dwApi->SearchArticles('daniweb-api');            // article search, 30 per page
 
-    $result = $dwApi->SearchMembers('pritaeas');
+    $result = $dwApi->SearchMembers('pritaeas');                // member search, 50 per page
 }
 
 if ($testOAuth)                                                 // DwApiOAuth
 {
-    $result = $dwApi->GetArticles();
+    $result = $dwApi->GetArticles();                            // list articles
 
-    $result = $dwApi->GetForumArticles(17);
+    $result = $dwApi->GetForumArticles(17);                     // articles for forum 17
 
-    $result = $dwApi->GetMemberArticles(94719);
+    $result = $dwApi->GetMemberArticles(94719);                 // articles for member 94719
 
-    $result = $dwApi->GetPrivateMessages(true);
-    $result = $dwApi->GetPrivateMessages(false);
-    $result = $dwApi->GetPrivateMessages('1');
+    $result = $dwApi->GetPrivateMessages(true);                 // received private messages for logged in user
+    $result = $dwApi->GetPrivateMessages(false);                // sent private messages for logged in user
+    $result = $dwApi->GetPrivateMessages('1');                  // false
 
-    $result = $dwApi->VotePost();
+    $result = $dwApi->VotePost();                               // ?
 
-    $result = $dwApi->WatchArticle();
+    $result = $dwApi->WatchArticle();                           // ?
 
-    $result = $dwApi->WhoAmI();
+    $result = $dwApi->WhoAmI();                                 // profile for logged in user
 }
 ?>
