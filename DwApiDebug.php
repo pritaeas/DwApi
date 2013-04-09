@@ -40,11 +40,12 @@ if ($testRss)                                                   // DwApiRss
     $result = $dwApi->GetFeed();                                // site feed
     $result = $dwApi->GetFeed(17);                              // php feed
 
-    $result = $dwApi->GetFeed(-1);                              // site feed
-    $result = $dwApi->GetFeed(17, 'invalid');                   // php feed
-    $result = $dwApi->GetFeed('1', 'invalid');                  // site feed
+    $result = $dwApi->GetFeed(-1);                              // site feed, -1 ignored
+    $result = $dwApi->GetFeed('1', 'invalid');                  // site feed, '1' and 'invalid' ignored
 
     $openArticleTypes = $dwApi->GetArticleTypes();
+    $openArticleTypes[] = null;
+    $openArticleTypes[] = 'invalid';
     foreach ($openArticleTypes as $articleType)
     {
         $result = $dwApi->GetFeed(17, $articleType);            // php feed filtered
@@ -53,15 +54,48 @@ if ($testRss)                                                   // DwApiRss
 
 if ($testOpen)                                                  // DwApiOpen
 {
-    $result = $dwApi->GetArticlePosts(451816);                  // posts for article 451816
+    $result = $dwApi->GetArticlePosts(451735);                  // posts for article 451735, page 1, 20 per page
+    $result = $dwApi->GetArticlePosts(451735, 2);               // posts for article 451735, page 2
+    $result = $dwApi->GetArticlePosts(451735, 'a');             // posts for article 451735, page 1, 'a' ignored
+    $result = $dwApi->GetArticlePosts('a');                     // false
 
-    $result = $dwApi->GetArticles();                            // list articles, 30 per page
+    $result = $dwApi->GetArticles();                            // list articles, page 1, 30 per page
+    $result = $dwApi->GetArticles(null, 2);                     // list articles, page 2
+    $result = $dwApi->GetArticles(451735);                      // specific article 451735
+    $result = $dwApi->GetArticles(451735, 2);                   // false, no page 2
+    $result = $dwApi->GetArticles(array (451735, 443382));      // specific articles 451735 and 443382
+    $result = $dwApi->GetArticles(array (451735, 443382), 2);   // false
+    $result = $dwApi->GetArticles(array ('a', 'b'), 2);         // list articles, page 2, invalid values ignored
 
-    $result = $dwApi->GetForumArticles(17);                     // articles for forum 17 (php), 30 per page
+    $result = $dwApi->GetForumArticles(17);                     // articles for forum 17 (php), page 1, 30 per page
+    $result = $dwApi->GetForumArticles('a');                    // false
+    $result = $dwApi->GetForumArticles(17, 2);                  // articles for forum 17 (php), page 2
+    $result = $dwApi->GetForumArticles(17, 'a');                // articles for forum 17 (php), page 1, 'a' ignored
+    $result = $dwApi->GetForumArticles('a', 'b');               // false
 
-    $result = $dwApi->GetForumPosts(17);                        // posts for forum 17, 20 per page
+    $result = $dwApi->GetForumPosts(17);                        // posts for forum 17, page 1, 20 per page
+    $result = $dwApi->GetForumPosts('a');                       // false
+    $result = $dwApi->GetForumPosts(17, 2);                     // posts for forum 17, page 2
+    $result = $dwApi->GetForumPosts(17, 'a');                   // posts for forum 17, page 1, 'a' ignored
+    $result = $dwApi->GetForumPosts('a', 'b');                  // false
 
     $result = $dwApi->GetForums();                              // list forums
+    $result = $dwApi->GetForums(31);                            // list web dev forums
+    $result = $dwApi->GetForums(array (31, 3));                 // list web dev and community forums
+
+    $relationTypes = $dwApi->GetRelationTypes();
+    $relationTypes[] = null;
+    $relationTypes[] = 'invalid';
+    foreach ($relationTypes as $relationType)
+    {
+        $result = $dwApi->GetForums(31, $relationType);         // false (ancestors), list web dev forums, not include self
+        $result = $dwApi->GetForums(31, $relationType, true);   // list web dev forums, include self
+        $result = $dwApi->GetForums(31, $relationType, false);  // list web dev forums, not include self
+        $result = $dwApi->GetForums(31, $relationType, 'a');    // list web dev forums, ignore 'a'
+    }
+
+    $result = $dwApi->GetForums(17, 'ancestors');               // list ancestor of php forum
+    $result = $dwApi->GetForums(17, 'ancestors', true);         // list ancestor of php forum, include self
 
     $result = $dwApi->GetMemberActivityPoints(94719);           // activity for member 94719 (pritaeas)
 
