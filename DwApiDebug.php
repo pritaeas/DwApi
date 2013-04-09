@@ -7,8 +7,8 @@ $dwApi = new DwApiOAuth('ACCESS_TOKEN');
 
 $testBase = false;
 $testRss = false;
-$testOpen = true;
-$testOAuth = false;
+$testOpen = false;
+$testOAuth = true;
 
 if ($testBase)                                                  // DwApiBase
 {
@@ -56,7 +56,6 @@ if ($testRss)                                                   // DwApiRss
 
 if ($testOpen)                                                  // DwApiOpen
 {
-    if (false) {
     $result = $dwApi->GetArticlePosts(451735);                  // posts for article 451735, page 1, 20 per page
     $result = $dwApi->GetArticlePosts(451735, 2);               // posts for article 451735, page 2
     $result = $dwApi->GetArticlePosts(451735, 'a');             // posts for article 451735, page 1, 'a' ignored
@@ -133,8 +132,8 @@ if ($testOpen)                                                  // DwApiOpen
     $result = $dwApi->GetMemberReputationComments('a');         // false
 
     $result = $dwApi->GetMembers();                             // list members, 50 per page, page 1
-    $result = $dwApi->GetMembers('pritaeas');                   // users 'pritaeas'
-    $result = $dwApi->GetMembers('prit');                       // users 'prit'
+    $result = $dwApi->GetMembers('pritaeas');                   // user 'pritaeas'
+    $result = $dwApi->GetMembers('prit');                       // user 'prit'
     $result = $dwApi->GetMembers('pritaeas', 2);                // false
     $result = $dwApi->GetMembers('prit', 2);                    // false
     $result = $dwApi->GetMembers(94719);                        // user by id
@@ -145,12 +144,23 @@ if ($testOpen)                                                  // DwApiOpen
 
     $result = $dwApi->GetPostReputationComments(1957463);       // reputation comments for post 1957463
     $result = $dwApi->GetPostReputationComments('a');           // false
-    }
-    $result = $dwApi->GetPosts();                               // list posts, 20 per page
 
-    $result = $dwApi->SearchArticles('daniweb-api');            // article search, 30 per page
+    $result = $dwApi->GetPosts();                               // list posts, page 1, 20 per page
+    $result = $dwApi->GetPosts(null, 2);                        // list posts, page 2
+    $result = $dwApi->GetPosts(1957463);                        // get post
+    $result = $dwApi->GetPosts('a');                            // ignore 'a'
+    $result = $dwApi->GetPosts(array (1957463, 1));             // list posts
+    $result = $dwApi->GetPosts(array (1957463, 1), 2);          // false
 
-    $result = $dwApi->SearchMembers('pritaeas');                // member search, 50 per page
+    $result = $dwApi->SearchArticles('daniweb-api');            // article search, page 1, 30 per page
+    $result = $dwApi->SearchArticles('daniweb-api', 2);         // article search, page 2
+    $result = $dwApi->SearchArticles('daniweb-api', 'a');       // article search, ignore 'a'
+    $result = $dwApi->SearchArticles(1);                        // false
+
+    $result = $dwApi->SearchMembers('prit');                    // member search, 50 per page
+    $result = $dwApi->SearchMembers('prit', 2);                 // false (no page 2 )
+    $result = $dwApi->SearchMembers('prit', 'a');               // member search, 50 per page
+    $result = $dwApi->SearchMembers(1);                         // false
 }
 
 if ($testOAuth)                                                 // DwApiOAuth
