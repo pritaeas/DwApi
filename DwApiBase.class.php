@@ -178,7 +178,9 @@ class DwApiBase {
                 }
 
                 $curlResult = curl_exec($ch);
-                if ($curlResult)
+                $httpStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+                if (($httpStatus == 200) and $curlResult)
                 {
                     $result = $curlResult;
                 }
@@ -187,7 +189,8 @@ class DwApiBase {
         }
         else if (ini_get('allow_url_fopen'))
         {
-            $result = file_get_contents($url);
+            // hide warning on invalid request, will return false
+            $result = @file_get_contents($url);
         }
 
         return $result;
