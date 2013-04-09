@@ -80,7 +80,7 @@ class DwApiOAuth extends DwApiOpen
      */
     public function WhoAmI()
     {
-        return $this->GetUrl('api/me');
+        return $this->GetUrl('/api/me');
     }
 
     /**
