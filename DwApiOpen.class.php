@@ -215,7 +215,7 @@ class DwApiOpen extends DwApiRss
      * @param int|null $page Page number (optional).
      * @return bool|string JSON result, false on error.
      */
-    public function GetMembers($members, $page = null)
+    public function GetMembers($members = null, $page = null)
     {
         $url = '/api/members';
 
@@ -237,17 +237,16 @@ class DwApiOpen extends DwApiRss
      * Get reputation comments for a specific post.
      *
      * @param int $postId Post ID.
-     * @param int|null $page Page number (optional).
      * @return bool|string JSON result, false on error.
      */
-    public function GetPostReputationComments($postId, $page = null)
+    public function GetPostReputationComments($postId)
     {
         if (!$this->IsValidId($postId))
         {
             return false;
         }
 
-        return $this->GetUrl("/api/posts/{$postId}/comments", $this->GetPageParameter($page));
+        return $this->GetUrl("/api/posts/{$postId}/comments");
     }
 
     /**
