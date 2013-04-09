@@ -105,7 +105,7 @@ class DwApiOpen extends DwApiRss
 
         if (is_bool($includeSelf))
         {
-            $getParameters = array ('include_self' => ($includeSelf ? 'true' : 'false'));
+            $getParameters = array ('include_self' => $includeSelf);
         }
 
         return $this->GetUrl($url, $getParameters);

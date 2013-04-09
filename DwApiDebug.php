@@ -90,8 +90,8 @@ if ($testOpen)                                                  // DwApiOpen
     {
         $result = $dwApi->GetForums(31, $relationType);         // false (ancestors), list web dev forums, not include self
         $result = $dwApi->GetForums(31, $relationType, true);   // list web dev forums, include self
-        $result = $dwApi->GetForums(31, $relationType, false);  // list web dev forums, not include self
-        $result = $dwApi->GetForums(31, $relationType, 'a');    // list web dev forums, ignore 'a'
+        $result = $dwApi->GetForums(31, $relationType, false);  // false (ancestors), list web dev forums, not include self
+        $result = $dwApi->GetForums(31, $relationType, 'a');    // false (ancestors), list web dev forums, ignore 'a'
     }
 
     $result = $dwApi->GetForums(17, 'ancestors');               // list ancestor of php forum
