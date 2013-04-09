@@ -1,7 +1,9 @@
 <?php
+set_time_limit(0);
+
 include 'DwApiOAuth.class.php';
 
-$dwApi = new DwApiOAuth('');
+$dwApi = new DwApiOAuth('ACCESS_TOKEN');
 
 $testBase = false;
 $testRss = false;
@@ -54,6 +56,7 @@ if ($testRss)                                                   // DwApiRss
 
 if ($testOpen)                                                  // DwApiOpen
 {
+    if (false) {
     $result = $dwApi->GetArticlePosts(451735);                  // posts for article 451735, page 1, 20 per page
     $result = $dwApi->GetArticlePosts(451735, 2);               // posts for article 451735, page 2
     $result = $dwApi->GetArticlePosts(451735, 'a');             // posts for article 451735, page 1, 'a' ignored
@@ -98,19 +101,51 @@ if ($testOpen)                                                  // DwApiOpen
     $result = $dwApi->GetForums(17, 'ancestors', true);         // list ancestor of php forum, include self
 
     $result = $dwApi->GetMemberActivityPoints(94719);           // activity for member 94719 (pritaeas)
+    $result = $dwApi->GetMemberActivityPoints('a');             // false
 
-    $result = $dwApi->GetMemberArticles(94719);                 // articles for member 94719, 30 per page
+    $result = $dwApi->GetMemberArticles(94719);                 // articles for member 94719, page 1, 30 per page
+    $result = $dwApi->GetMemberArticles(94719, 2);              // articles for member 94719, page 2
+    $result = $dwApi->GetMemberArticles('a');                   // false
+    $result = $dwApi->GetMemberArticles(array (94719, 1));      // articles for members 1 and 94719, page 1
+    $result = $dwApi->GetMemberArticles(array (94719, 1), 2);   // articles for members 1 and 94719, page 2
+    $result = $dwApi->GetMemberArticles(array (94719, 1), 'a'); // articles for members 1 and 94719, page 1, ignore 'a'
 
     $result = $dwApi->GetMemberEndorsements(94719);             // endorsements for member 94719
+    $result = $dwApi->GetMemberEndorsements('a');               // false
 
     $result = $dwApi->GetMemberPosts(94719);                    // posts for member 94719, 20 per page
+    $result = $dwApi->GetMemberPosts('a');                      // false
+    $result = $dwApi->GetMemberPosts(94719, null, 2);           // posts, page 2
+    $result = $dwApi->GetMemberPosts(94719, null, 'a');         // posts, page 1, ignore 'a'
 
-    $result = $dwApi->GetMemberReputationComments(94719);       // reputation for member 94719, 30 per page
+    $postTypes = $dwApi->GetPostTypes();
+    $postTypes[] = null;
+    $postTypes[] = 'invalid';
+    foreach ($postTypes as $postType)
+    {
+        $result = $dwApi->GetMemberPosts(94719, $postType, 1);
+        $result = $dwApi->GetMemberPosts(94719, $postType, 2);
+    }
 
-    $result = $dwApi->GetMembers();                             // list members, 50 per page
+    $result = $dwApi->GetMemberReputationComments(94719);       // reputation for member 94719, page 1, 30 per page
+    $result = $dwApi->GetMemberReputationComments(94719, 2);    // reputation for member 94719, page 2
+    $result = $dwApi->GetMemberReputationComments(94719, 'a');  // reputation for member 94719, page 1, ignore 'a'
+    $result = $dwApi->GetMemberReputationComments('a');         // false
+
+    $result = $dwApi->GetMembers();                             // list members, 50 per page, page 1
+    $result = $dwApi->GetMembers('pritaeas');                   // users 'pritaeas'
+    $result = $dwApi->GetMembers('prit');                       // users 'prit'
+    $result = $dwApi->GetMembers('pritaeas', 2);                // false
+    $result = $dwApi->GetMembers('prit', 2);                    // false
+    $result = $dwApi->GetMembers(94719);                        // user by id
+    $result = $dwApi->GetMembers(array (94719, 1));             // users by id's
+    $result = $dwApi->GetMembers(array (94719, 1), 2);          // todo EXPECTED FALSE !
+    $result = $dwApi->GetMembers(array (94719, 1), 'a');        // users by id's, ignore 'a'
+    $result = $dwApi->GetMembers(false);                        // user list, ignore false
 
     $result = $dwApi->GetPostReputationComments(1957463);       // reputation comments for post 1957463
-
+    $result = $dwApi->GetPostReputationComments('a');           // false
+    }
     $result = $dwApi->GetPosts();                               // list posts, 20 per page
 
     $result = $dwApi->SearchArticles('daniweb-api');            // article search, 30 per page
