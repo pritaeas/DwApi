@@ -5,6 +5,7 @@ class DwApiRss extends DwApiBase
 {
     /**
      * Returns the RSS feed, optionally filtered by forum ID and/or article type.
+     * Invalid forum ID's and article types will be ignored.
      *
      * @param int|null $forumId Forum ID (optional).
      * @param null|string $articleType Article type to filter on (optional).
