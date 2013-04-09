@@ -1,7 +1,7 @@
 <?php
 include 'DwApiOAuth.class.php';
 
-$dwApi = new DwApiOAuth('8e234f2b19801f35243fabe7bd73d822');
+$dwApi = new DwApiOAuth('');
 
 $testBase = false;
 $testRss = false;
