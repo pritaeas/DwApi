@@ -7,22 +7,22 @@ class DwApiBase {
 
     /**
      * @var array List of supported article types.
-     * False indicates supported in open API, true for OAuth API.
+     * True indicates supported in open API, false for OAuth API.
      */
     protected $articleTypes = array
     (
-        'unanswered' => false,
-        'solved' => false,
-        'threads' => false,
-        'news' => false,
-        'reviews' => false,
-        'interviews' => false,
-        'tutorials' => false,
-        'code' => false,
-        'whitepapers' => false,
-        'recommended' => true,
-        'viewed' => true,
-        'watching' => true
+        'unanswered' => true,
+        'solved' => true,
+        'threads' => true,
+        'news' => true,
+        'reviews' => true,
+        'interviews' => true,
+        'tutorials' => true,
+        'code' => true,
+        'whitepapers' => true,
+        'recommended' => false,
+        'viewed' => false,
+        'watching' => false
     );
 
     protected $baseUrl = 'http://www.daniweb.com';
@@ -52,6 +52,11 @@ class DwApiBase {
      */
     public function GetArticleTypes($openOnly = true, $sorted = true)
     {
+        if (!is_bool($openOnly) or !is_bool($sorted))
+        {
+            return false;
+        }
+
         $result = array();
 
         if (is_bool($openOnly) and $openOnly)
@@ -85,6 +90,11 @@ class DwApiBase {
      */
     public function GetPostTypes($sorted = true)
     {
+        if (!is_bool($sorted))
+        {
+            return false;
+        }
+
         $result = $this->postTypes;
 
         if (is_bool($sorted) and $sorted)
@@ -103,6 +113,11 @@ class DwApiBase {
      */
     public function GetRelationTypes($sorted = true)
     {
+        if (!is_bool($sorted))
+        {
+            return false;
+        }
+
         $result = $this->relationTypes;
 
         if (is_bool($sorted) and $sorted)

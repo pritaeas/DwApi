@@ -1,25 +1,34 @@
 <?php
 include 'DwApiOAuth.class.php';
 
-$dwApi = new DwApiOAuth('AccessToken');
+$dwApi = new DwApiOAuth('8e234f2b19801f35243fabe7bd73d822');
 
 
 // DwApiBase
 
-$openArticleTypes = $dwApi->GetArticleTypes(true, true);
-$oauthArticleTypes = $dwApi->GetArticleTypes(false, true);
+$result = $dwApi->GetArticleTypes();                        // open only, sorted
+$result = $dwApi->GetArticleTypes(true);                    // open only, sorted
 
-$result = $dwApi->GetArticleTypes(true, false);
-$result = $dwApi->GetArticleTypes(false, false);
-$result = $dwApi->GetArticleTypes('1', 2);
+$openArticleTypes = $dwApi->GetArticleTypes(true, true);    // open only, sorted
+$oauthArticleTypes = $dwApi->GetArticleTypes(false, true);  // oauth, sorted
 
-$result = $dwApi->GetPostTypes(true);
-$result = $dwApi->GetPostTypes(false);
-$result = $dwApi->GetPostTypes('1');
+$result = $dwApi->GetArticleTypes(true, false);             // open only, unsorted
+$result = $dwApi->GetArticleTypes(false, false);            // oauth, unsorted
 
-$result = $dwApi->GetRelationTypes(true);
-$result = $dwApi->GetRelationTypes(false);
-$result = $dwApi->GetRelationTypes(2);
+$result = $dwApi->GetArticleTypes('1');                     // false
+$result = $dwApi->GetArticleTypes('1', 2);                  // false
+
+$result = $dwApi->GetPostTypes();                           // sorted
+$result = $dwApi->GetPostTypes(true);                       // sorted
+$result = $dwApi->GetPostTypes(false);                      // unsorted
+
+$result = $dwApi->GetPostTypes('1');                        // false
+
+$result = $dwApi->GetRelationTypes();                       // sorted
+$result = $dwApi->GetRelationTypes(true);                   // sorted
+$result = $dwApi->GetRelationTypes(false);                  // unsorted
+
+$result = $dwApi->GetRelationTypes(2);                      // false
 
 
 // DwApiRss
