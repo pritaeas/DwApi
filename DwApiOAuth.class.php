@@ -19,6 +19,11 @@ class DwApiOAuth extends DwApiOpen
      */
     public function GetPrivateMessages($inbox = true)
     {
+        if (!is_bool($inbox))
+        {
+            return false;
+        }
+
         return $this->GetUrl('/api/me/' . ((is_bool($inbox) and $inbox) ? 'inbox' : 'outbox'));
     }
 
