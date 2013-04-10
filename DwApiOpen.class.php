@@ -126,11 +126,12 @@ class DwApiOpen extends DwApiRss
     /**
      * Get a list of articles for a specific member, or members.
      *
-     * @param mixed $memberIds Member ID as int, or array of int.
+     * @param array|int $memberIds Member ID as int, or array of int.
+     * @param int|null $forumId Forum ID (optional).
      * @param int|null $page Page number (optional).
      * @return bool|string JSON result, false on error.
      */
-    public function GetMemberArticles($memberIds, $page = null)
+    public function GetMemberArticles($memberIds, $forumId = null, $page = null)
     {
         $memberIdString = $this->IdsToString($memberIds);
         if (empty($memberIdString))
@@ -138,7 +139,13 @@ class DwApiOpen extends DwApiRss
             return false;
         }
 
-        return $this->GetUrl("/api/members/{$memberIdString}/articles", $this->GetPageParameter($page));
+        $getParameters = $this->GetPageParameter($page);
+        if ($this->IsValidId($forumId))
+        {
+            $getParameters['forum_id'] = $forumId;
+        }
+
+        return $this->GetUrl("/api/members/{$memberIdString}/articles", $getParameters);
     }
 
     /**
