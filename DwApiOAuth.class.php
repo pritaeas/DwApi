@@ -30,47 +30,35 @@ class DwApiOAuth extends DwApiOpen
     /**
      * Upvote or downvote a post.
      *
-     * @param int|null $postId Post ID (optional).
+     * @param int $postId Post ID.
      * @param bool $upVote Upvote when true, downvote when false.
      * @return bool|string JSON result, false on error.
      */
-    public function VotePost($postId = null, $upVote = true)
+    public function VotePost($postId, $upVote = true)
     {
-        if ($this->IsValidId($postId))
+        if (!$this->IsValidId($postId) or !is_bool($upVote))
         {
-            $url = "/api/posts/{$postId}/vote";
-        }
-        else
-        {
-            $url = '/api/posts/vote';
+            return false;
         }
 
-        $getParameters = array ('vote' => ((is_bool($upVote) and $upVote) ? 1 : -1));
-
-        return $this->GetUrl($url, $getParameters);
+        return $this->GetUrl("/api/posts/{$postId}/vote", array ('vote' => ($upVote ? 1 : -1)));
     }
 
     /**
      * Watch or unwatch an article.
      *
-     * @param int|null $articleId Article ID (optional).
+     * @param int $articleId Article ID.
      * @param bool $watch Watch the article when true, unwatch when false.
      * @return bool|string JSON result, false on error.
      */
-    public function WatchArticle($articleId = null, $watch = true)
+    public function WatchArticle($articleId, $watch = true)
     {
-        if ($this->IsValidId($articleId))
+        if (!$this->IsValidId($articleId) or !is_bool($watch))
         {
-            $url = "/api/articles/{$articleId}/watch";
-        }
-        else
-        {
-            $url = '/api/articles/watch';
+            return false;
         }
 
-        $getParameters = (is_bool($watch) and $watch) ? array () : array ('remove' => true);
-
-        return $this->GetUrl($url, $getParameters);
+        return $this->GetUrl("/api/articles/{$articleId}/watch", array ('remove' => ($watch ? false : true)));
     }
 
     /**

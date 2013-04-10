@@ -152,22 +152,31 @@ if ($testOAuth)                                                 // DwApiOAuth
 {
     // same as above, just three additional article types
 
-    $result = $dwApi->GetArticles();                            // list articles
+    //$result = $dwApi->GetArticles();                            // list articles
 
-    $result = $dwApi->GetForumArticles(17);                     // articles for forum 17
+    //$result = $dwApi->GetForumArticles(17);                     // articles for forum 17
 
-    $result = $dwApi->GetMemberArticles(94719);                 // articles for member 94719
+    //$result = $dwApi->GetMemberArticles(94719);                 // articles for member 94719
 
 
     // additional functionality
 
-    $result = $dwApi->GetPrivateMessages(true);                 // received private messages for logged in user
-    $result = $dwApi->GetPrivateMessages(false);                // sent private messages for logged in user
+    $result = $dwApi->GetPrivateMessages(true);                 // received private messages for logged in user, or false (error/empty)
+    $result = $dwApi->GetPrivateMessages(false);                // sent private messages for logged in user, or false (error/empty)
     $result = $dwApi->GetPrivateMessages('1');                  // false
 
-    $result = $dwApi->VotePost();                               // json false result
+    $result = $dwApi->VotePost('a');                            // false
+    // disabled to avoid more voting
+    //$result = $dwApi->VotePost(1938485);                        // vote post up, json false result when already voted
+    //$result = $dwApi->VotePost(1938485, false);                 // vote post down, json false result when already voted
+    $result = $dwApi->VotePost(1938485, 'a');                   // false
 
-    $result = $dwApi->WatchArticle();                           // json false result
+    $result = $dwApi->WatchArticle('a');                        // false
+    $result = $dwApi->WatchArticle(448571);                     // watch article
+    $result = $dwApi->WatchArticle(448571, true);               // watch article, again doesn't fail
+    $result = $dwApi->WatchArticle(448571, false);              // unwatch article
+    $result = $dwApi->WatchArticle(448571, false);              // unwatch article
+    $result = $dwApi->WatchArticle(448571, 'a');                // false
 
     $result = $dwApi->WhoAmI();                                 // profile for logged in user
 }
