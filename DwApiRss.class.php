@@ -21,7 +21,7 @@ class DwApiRss extends DwApiBase
             $url .= "/{$forumId}";
         }
 
-        if ($this->IsArticleType($articleType))
+        if ($this->IsRssArticleType($articleType))
         {
             $url .= "/{$articleType}";
         }

@@ -23,14 +23,12 @@ class DwApiOpen extends DwApiRss
     /**
      * Get a list of (specific) articles.
      *
-     * @param mixed $articleIds Article ID as int, or array of int (optional).
+     * @param array|int|null $articleIds Article ID as int, or array of int (optional).
      * @param int|null $page Page number (optional).
      * @return bool|string JSON result, false on error.
      */
     public function GetArticles($articleIds = null, $page = null)
     {
-        // todo article filter based on access token
-
         $url = "/api/articles";
 
         $articleIdString = $this->IdsToString($articleIds);
@@ -51,8 +49,6 @@ class DwApiOpen extends DwApiRss
      */
     public function GetForumArticles($forumIds, $page = null)
     {
-        // todo article filter based on access token
-
         $forumIdString = $this->IdsToString($forumIds);
         if (empty($forumIdString))
         {
@@ -136,8 +132,6 @@ class DwApiOpen extends DwApiRss
      */
     public function GetMemberArticles($memberIds, $page = null)
     {
-        // todo article filter based on access token
-
         $memberIdString = $this->IdsToString($memberIds);
         if (empty($memberIdString))
         {

@@ -4,9 +4,9 @@ include 'DwApiOpen.class.php';
 class DwApiOAuth extends DwApiOpen
 {
     /**
-     * @param string $accessToken Access token.
+     * @param string $accessToken Access token or null for open API only.
      */
-    function __construct($accessToken)
+    function __construct($accessToken = null)
     {
         $this->accessToken = (is_string($accessToken) and !empty($accessToken)) ? $accessToken : null;
     }
@@ -19,7 +19,7 @@ class DwApiOAuth extends DwApiOpen
      */
     public function GetPrivateMessages($inbox = true)
     {
-        if (!is_bool($inbox))
+        if (($this->accessToken == null) or !is_bool($inbox))
         {
             return false;
         }
@@ -36,7 +36,7 @@ class DwApiOAuth extends DwApiOpen
      */
     public function VotePost($postId, $upVote = true)
     {
-        if (!$this->IsValidId($postId) or !is_bool($upVote))
+        if (($this->accessToken == null) or !$this->IsValidId($postId) or !is_bool($upVote))
         {
             return false;
         }
@@ -53,7 +53,7 @@ class DwApiOAuth extends DwApiOpen
      */
     public function WatchArticle($articleId, $watch = true)
     {
-        if (!$this->IsValidId($articleId) or !is_bool($watch))
+        if (($this->accessToken == null) or !$this->IsValidId($articleId) or !is_bool($watch))
         {
             return false;
         }
@@ -68,6 +68,11 @@ class DwApiOAuth extends DwApiOpen
      */
     public function WhoAmI()
     {
+        if ($this->accessToken == null)
+        {
+            return false;
+        }
+
         return $this->GetUrl('/api/me');
     }
 

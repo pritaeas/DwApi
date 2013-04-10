@@ -44,21 +44,15 @@ class DwApiBase {
     );
     
     /**
-     * Get the list of supported article types.
+     * Get the list of supported article types (depends on whether an access token is set).
      *
-     * @param bool $openOnly Show only valid types for the open API (optional), default true.
      * @return array List of article types.
      */
-    public function GetArticleTypes($openOnly = true)
+    public function GetArticleTypes()
     {
-        if (!is_bool($openOnly))
-        {
-            return false;
-        }
-
         $result = array();
 
-        if (is_bool($openOnly) and $openOnly)
+        if ($this->accessToken == null)
         {
             foreach ($this->articleTypes as $articleType => $articleOpen)
             {
@@ -95,6 +89,26 @@ class DwApiBase {
     public function GetRelationTypes()
     {
         return $this->relationTypes;
+    }
+
+    /**
+     * Get the list of supported RSS article types.
+     *
+     * @return array List of RSS article types.
+     */
+    public function GetRssArticleTypes()
+    {
+        $result = array();
+
+        foreach ($this->articleTypes as $articleType => $articleOpen)
+        {
+            if ($articleOpen)
+            {
+                $result[] = $articleType;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -168,7 +182,7 @@ class DwApiBase {
     /**
      * Converts an array of ID's to a separated string.
      *
-     * @param mixed $ids ID as int, or array of int.
+     * @param array|int $ids ID as int, or array of int.
      * @param string $separator Separator (optional), default ';'.
      * @return string Separated string of ID's, or empty string.
      */
@@ -196,15 +210,14 @@ class DwApiBase {
 
     /**
      * Check if article type is valid.
+     * If access token is null, checks open API types, otherwise all types.
      *
      * @param string $articleType Article type.
-     * @param bool $openOnly Use only types for the open API (optional), default true.
      * @return bool True when valid, false otherwise.
      */
-    protected function IsArticleType($articleType, $openOnly = true)
+    protected function IsArticleType($articleType)
     {
-        $articleTypes = $this->GetArticleTypes($openOnly);
-        return in_array($articleType, $articleTypes);
+        return in_array($articleType, $this->GetArticleTypes($this->accessToken == null));
     }
 
     /**
@@ -227,6 +240,17 @@ class DwApiBase {
     protected function IsRelationType($relationType)
     {
         return in_array($relationType, $this->relationTypes);
+    }
+
+    /**
+     * Check if article type is valid.
+     *
+     * @param string $articleType Article type.
+     * @return bool True when valid, false otherwise.
+     */
+    protected function IsRssArticleType($articleType)
+    {
+        return in_array($articleType, $this->GetRssArticleTypes());
     }
 
     /**

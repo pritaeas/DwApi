@@ -3,7 +3,7 @@ set_time_limit(0);
 
 include 'DwApiOAuth.class.php';
 
-$dwApi = new DwApiOAuth('ACCESS_TOKEN');
+$dwApi = new DwApiOAuth('');
 
 $testBase = false;
 $testRss = false;
@@ -12,14 +12,13 @@ $testOAuth = true;
 
 if ($testBase)                                                  // DwApiBase
 {
-    $result = $dwApi->GetArticleTypes();                        // open only article types
-    $result = $dwApi->GetArticleTypes(true);                    // open only article types
-    $result = $dwApi->GetArticleTypes(false);                   // open and oauth article types
-    $result = $dwApi->GetArticleTypes('1');                     // false
+    $result = $dwApi->GetArticleTypes();                        // open only article types when access token is null
 
     $result = $dwApi->GetPostTypes();                           // post types
 
     $result = $dwApi->GetRelationTypes();                       // relation types
+
+    $result = $dwApi->GetRssArticleTypes();                     // open only article types for RSS
 }
 
 if ($testRss)                                                   // DwApiRss
@@ -30,10 +29,10 @@ if ($testRss)                                                   // DwApiRss
     $result = $dwApi->GetFeed(-1);                              // site feed, -1 ignored
     $result = $dwApi->GetFeed('1', 'invalid');                  // site feed, '1' and 'invalid' ignored
 
-    $openArticleTypes = $dwApi->GetArticleTypes();
-    $openArticleTypes[] = null;
-    $openArticleTypes[] = 'invalid';
-    foreach ($openArticleTypes as $articleType)
+    $rssArticleTypes = $dwApi->GetRssArticleTypes();
+    $rssArticleTypes[] = null;
+    $rssArticleTypes[] = 'invalid';
+    foreach ($rssArticleTypes as $articleType)
     {
         $result = $dwApi->GetFeed(17, $articleType);            // php feed filtered
     }
@@ -123,7 +122,7 @@ if ($testOpen)                                                  // DwApiOpen
     $result = $dwApi->GetMembers('prit', 2);                    // false
     $result = $dwApi->GetMembers(94719);                        // user by id
     $result = $dwApi->GetMembers(array (94719, 1));             // users by id's
-    $result = $dwApi->GetMembers(array (94719, 1), 2);          // todo EXPECTED FALSE !
+    $result = $dwApi->GetMembers(array (94719, 1), 2);          // todo EXPECTED FALSE !!
     $result = $dwApi->GetMembers(array (94719, 1), 'a');        // users by id's, ignore 'a'
     $result = $dwApi->GetMembers(false);                        // user list, ignore false
 
@@ -152,11 +151,11 @@ if ($testOAuth)                                                 // DwApiOAuth
 {
     // same as above, just three additional article types
 
-    //$result = $dwApi->GetArticles();                            // list articles
+    $result = $dwApi->GetArticles();                            // list articles
 
-    //$result = $dwApi->GetForumArticles(17);                     // articles for forum 17
+    $result = $dwApi->GetForumArticles(17);                     // articles for forum 17
 
-    //$result = $dwApi->GetMemberArticles(94719);                 // articles for member 94719
+    $result = $dwApi->GetMemberArticles(94719);                 // articles for member 94719
 
 
     // additional functionality
