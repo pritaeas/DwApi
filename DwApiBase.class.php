@@ -168,6 +168,16 @@ class DwApiBase {
             $result = @file_get_contents($url);
         }
 
+        if (is_string($result))
+        {
+            // check if the returned json result contains a false success response
+            $data = json_decode($result);
+            if (isset($data) and isset($data->data) and isset($data->data->success) and !$data->data->success)
+            {
+                $result = false;
+            }
+        }
+
         return $result;
     }
 
