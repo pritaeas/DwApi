@@ -7,7 +7,7 @@ $dwApi = new DwApiOAuth('');
 
 $testBase = false;
 $testRss = false;
-$testOpen = true;
+$testOpen = false;
 $testOAuth = true;
 
 if ($testBase)                                                  // DwApiBase
@@ -65,26 +65,27 @@ if ($testOpen)                                                  // DwApiOpen
     //$result = $dwApi->GetForumPosts(17, 'a');                   // posts for forum 17, page 1, 'a' ignored
     //$result = $dwApi->GetForumPosts('a', 'b');                  // false
 
-    $result = $dwApi->GetForums();                              // list forums
-    $result = $dwApi->GetForums(31);                            // list web dev forums
-    $result = $dwApi->GetForums(array (31, 3));                 // list web dev and community forums
+    //$result = $dwApi->GetForums();                              // list forums
+    //$result = $dwApi->GetForums(31);                            // list web dev forums
+    //$result = $dwApi->GetForums(array (31, 3));                 // list web dev and community forums
 
-    $relationTypes = $dwApi->GetRelationTypes();
-    $relationTypes[] = null;
-    $relationTypes[] = 'invalid';
-    foreach ($relationTypes as $relationType)
-    {
-        $result = $dwApi->GetForums(31, $relationType);         // false (ancestors), list web dev forums, not include self
-        $result = $dwApi->GetForums(31, $relationType, true);   // list web dev forums, include self
-        $result = $dwApi->GetForums(31, $relationType, false);  // false (ancestors), list web dev forums, not include self
-        $result = $dwApi->GetForums(31, $relationType, 'a');    // false (ancestors), list web dev forums, ignore 'a'
-    }
+    //$relationTypes = $dwApi->GetRelationTypes();
+    //$relationTypes[] = null;
+    //$relationTypes[] = 'invalid';
+    //foreach ($relationTypes as $relationType)
+    //{
+    //    $result = $dwApi->GetForums(31, $relationType);         // false (ancestors), list web dev forums, not include self
+    //    $result = $dwApi->GetForums(31, $relationType, true);   // list web dev forums, include self
+    //    $result = $dwApi->GetForums(31, $relationType, false);  // false (ancestors), list web dev forums, not include self
+    //    $result = $dwApi->GetForums(31, $relationType, 'a');    // false (ancestors), list web dev forums, ignore 'a'
+    //}
 
-    $result = $dwApi->GetForums(17, 'ancestors');               // list ancestor of php forum
-    $result = $dwApi->GetForums(17, 'ancestors', true);         // list ancestor of php forum, include self
+    //$result = $dwApi->GetForums(17, 'ancestors');               // list ancestor of php forum
+    //$result = $dwApi->GetForums(17, 'ancestors', true);         // list ancestor of php forum, include self
 
-    $result = $dwApi->GetMemberActivityPoints(94719);           // activity for member 94719 (pritaeas)
-    $result = $dwApi->GetMemberActivityPoints('a');             // false
+    //$result = $dwApi->GetMemberActivityPoints(94719);           // activity for member 94719 (pritaeas)
+    //$result = $dwApi->GetMemberActivityPoints('a');             // false
+
     $result = $dwApi->GetMemberArticles(94719);                 // articles for member 94719, page 1, 30 per page
     $result = $dwApi->GetMemberArticles(94719, null, 2);        // articles for member 94719, page 2
     $result = $dwApi->GetMemberArticles('a');                   // false
@@ -132,7 +133,7 @@ if ($testOpen)                                                  // DwApiOpen
 
     //$result = $dwApi->GetPosts();                               // list posts, page 1, 20 per page
     //$result = $dwApi->GetPosts(null, 2);                        // list posts, page 2
-    //$result = $dwApi->GetPosts(1957463);                        // get post
+    $result = $dwApi->GetPosts(1938485);                        // get post
     //$result = $dwApi->GetPosts('a');                            // ignore 'a'
     //$result = $dwApi->GetPosts(array (1957463, 1));             // list posts
     //$result = $dwApi->GetPosts(array (1957463, 1), 2);          // false
