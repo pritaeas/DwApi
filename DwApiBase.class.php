@@ -50,17 +50,9 @@ class DwApiBase {
      */
     public function GetArticleTypes()
     {
-        $result = array();
-
         if ($this->accessToken == null)
         {
-            foreach ($this->articleTypes as $articleType => $articleOpen)
-            {
-                if ($articleOpen)
-                {
-                    $result[] = $articleType;
-                }
-            }
+            $result = $this->GetRssArticleTypes();
         }
         else
         {
