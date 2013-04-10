@@ -12,29 +12,14 @@ $testOAuth = true;
 
 if ($testBase)                                                  // DwApiBase
 {
-    $result = $dwApi->GetArticleTypes();                        // open only, sorted
-    $result = $dwApi->GetArticleTypes(true);                    // open only, sorted
-
-    $result = $dwApi->GetArticleTypes(true, true);              // open only, sorted
-    $result = $dwApi->GetArticleTypes(false, true);             // oauth, sorted
-
-    $result = $dwApi->GetArticleTypes(true, false);             // open only, unsorted
-    $result = $dwApi->GetArticleTypes(false, false);            // oauth, unsorted
-
+    $result = $dwApi->GetArticleTypes();                        // open only article types
+    $result = $dwApi->GetArticleTypes(true);                    // open only article types
+    $result = $dwApi->GetArticleTypes(false);                   // open and oauth article types
     $result = $dwApi->GetArticleTypes('1');                     // false
-    $result = $dwApi->GetArticleTypes('1', 2);                  // false
 
-    $result = $dwApi->GetPostTypes();                           // sorted
-    $result = $dwApi->GetPostTypes(true);                       // sorted
-    $result = $dwApi->GetPostTypes(false);                      // unsorted
+    $result = $dwApi->GetPostTypes();                           // post types
 
-    $result = $dwApi->GetPostTypes('1');                        // false
-
-    $result = $dwApi->GetRelationTypes();                       // sorted
-    $result = $dwApi->GetRelationTypes(true);                   // sorted
-    $result = $dwApi->GetRelationTypes(false);                  // unsorted
-
-    $result = $dwApi->GetRelationTypes(2);                      // false
+    $result = $dwApi->GetRelationTypes();                       // relation types
 }
 
 if ($testRss)                                                   // DwApiRss
@@ -165,19 +150,24 @@ if ($testOpen)                                                  // DwApiOpen
 
 if ($testOAuth)                                                 // DwApiOAuth
 {
+    // same as above, just three additional article types
+
     $result = $dwApi->GetArticles();                            // list articles
 
     $result = $dwApi->GetForumArticles(17);                     // articles for forum 17
 
     $result = $dwApi->GetMemberArticles(94719);                 // articles for member 94719
 
+
+    // additional functionality
+
     $result = $dwApi->GetPrivateMessages(true);                 // received private messages for logged in user
     $result = $dwApi->GetPrivateMessages(false);                // sent private messages for logged in user
     $result = $dwApi->GetPrivateMessages('1');                  // false
 
-    $result = $dwApi->VotePost();                               // ?
+    $result = $dwApi->VotePost();                               // json false result
 
-    $result = $dwApi->WatchArticle();                           // ?
+    $result = $dwApi->WatchArticle();                           // json false result
 
     $result = $dwApi->WhoAmI();                                 // profile for logged in user
 }

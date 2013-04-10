@@ -11,14 +11,14 @@ class DwApiBase {
      */
     protected $articleTypes = array
     (
-        'unanswered' => true,
-        'solved' => true,
-        'threads' => true,
+        'code' => true,
+        'interviews' => true,
         'news' => true,
         'reviews' => true,
-        'interviews' => true,
+        'solved' => true,
+        'threads' => true,
         'tutorials' => true,
-        'code' => true,
+        'unanswered' => true,
         'whitepapers' => true,
         'recommended' => false,
         'viewed' => false,
@@ -32,7 +32,7 @@ class DwApiBase {
      */
     protected $postTypes = array
     (
-        'solved', 'upvoted', 'downvoted'
+        'downvoted', 'solved', 'upvoted'
     );
 
     /**
@@ -47,12 +47,11 @@ class DwApiBase {
      * Get the list of supported article types.
      *
      * @param bool $openOnly Show only valid types for the open API (optional), default true.
-     * @param bool $sorted Sort alphabetically (optional), default true.
      * @return array List of article types.
      */
-    public function GetArticleTypes($openOnly = true, $sorted = true)
+    public function GetArticleTypes($openOnly = true)
     {
-        if (!is_bool($openOnly) or !is_bool($sorted))
+        if (!is_bool($openOnly))
         {
             return false;
         }
@@ -72,10 +71,6 @@ class DwApiBase {
         else
         {
             $result = array_keys($this->articleTypes);
-        }
-
-        if (is_bool($sorted) and $sorted)
-        {
             sort($result);
         }
 
@@ -85,47 +80,21 @@ class DwApiBase {
     /**
      * Get the list of supported post types.
      *
-     * @param bool $sorted Sort alphabetically (optional), default true.
      * @return array List of post types.
      */
-    public function GetPostTypes($sorted = true)
+    public function GetPostTypes()
     {
-        if (!is_bool($sorted))
-        {
-            return false;
-        }
-
-        $result = $this->postTypes;
-
-        if (is_bool($sorted) and $sorted)
-        {
-            sort($result);
-        }
-
-        return $result;
+        return $this->postTypes;
     }
 
     /**
      * Get the list of supported forum relation types.
      *
-     * @param bool $sorted Sort alphabetically (optional), default true.
      * @return array List of forum relation types.
      */
-    public function GetRelationTypes($sorted = true)
+    public function GetRelationTypes()
     {
-        if (!is_bool($sorted))
-        {
-            return false;
-        }
-
-        $result = $this->relationTypes;
-
-        if (is_bool($sorted) and $sorted)
-        {
-            sort($result);
-        }
-
-        return $result;
+        return $this->relationTypes;
     }
 
     /**
