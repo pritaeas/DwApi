@@ -176,7 +176,7 @@ if ($testOAuth)                                                         // DwApi
     foreach ($articleTypes as $articleType)
     {
         $result = $dwApi->GetArticles(null, $articleType);              // list specific article types
-        $result = $dwApi->GetArticles(null, $articleType, false);              // list specific article types
+        $result = $dwApi->GetArticles(null, $articleType, false);       // list specific article types
 
         $result = $dwApi->GetForumArticles(17, $articleType);           // specific article types for forum 17
         $result = $dwApi->GetForumArticles(17, $articleType, false);    // specific article types for forum 17, oldest first
@@ -192,8 +192,8 @@ if ($testOAuth)                                                         // DwApi
     //$result = $dwApi->GetPrivateMessages('1');                          // false
 
     //$result = $dwApi->VotePost('a');                                    // false
-    //$result = $dwApi->VotePost(1938485);                                // vote post up, json false result when already voted
-    //$result = $dwApi->VotePost(1938485, false);                         // vote post down, json false result when already voted
+    //$result = $dwApi->VotePost(1938485);                                // vote post up, json false result when already voted (even when manually undone)
+    //$result = $dwApi->VotePost(1938485, false);                         // vote post down, json false result when already voted (even when manually undone)
     //$result = $dwApi->VotePost(1938485, 'a');                           // false
 
     //$result = $dwApi->WatchArticle('a');                                // false
