@@ -24,12 +24,15 @@ class DwApiOpen extends DwApiRss
      * Get a list of (specific) articles.
      *
      * @param array|int|null $articleIds Article ID as int, or array of int (optional).
+     * @param null|string $articleType Article type filter (optional).
+     * @param bool $newestFirst Newest post first when true, Oldest post first when false, default true.
      * @param int|null $page Page number (optional).
      * @return bool|string JSON result, false on error.
      */
-    public function GetArticles($articleIds = null, $page = null)
+    public function GetArticles($articleIds = null, $articleType = null, $newestFirst = true, $page = null)
     {
         $url = "/api/articles";
+        $getParameters = $this->GetPageParameter($page);
 
         $articleIdString = $this->IdsToString($articleIds);
         if (!empty($articleIdString))
@@ -37,17 +40,29 @@ class DwApiOpen extends DwApiRss
             $url .= "/{$articleIdString}";
         }
 
-        return $this->GetUrl($url, $this->GetPageParameter($page));
+        if ($this->IsArticleType($articleType))
+        {
+            $getParameters['filter'] = $articleType;
+        }
+
+        if (is_bool($newestFirst))
+        {
+            $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
+        }
+
+        return $this->GetUrl($url, $getParameters);
     }
 
     /**
      * Get a list of articles for a specific forum ID, or an array of forum IDs.
      *
      * @param mixed $forumIds Forum ID as int, or array of int.
+     * @param null|string $articleType Article type filter (optional).
+     * @param bool $newestFirst Newest post first when true, Oldest post first when false, default true.
      * @param int|null $page Page number.
      * @return bool|string JSON result, false on error.
      */
-    public function GetForumArticles($forumIds, $page = null)
+    public function GetForumArticles($forumIds, $articleType = null, $newestFirst = true, $page = null)
     {
         $forumIdString = $this->IdsToString($forumIds);
         if (empty($forumIdString))
@@ -55,7 +70,19 @@ class DwApiOpen extends DwApiRss
             return false;
         }
 
-        return $this->GetUrl("/api/forums/{$forumIdString}/articles", $this->GetPageParameter($page));
+        $getParameters = $this->GetPageParameter($page);
+
+        if ($this->IsArticleType($articleType))
+        {
+            $getParameters['filter'] = $articleType;
+        }
+
+        if (is_bool($newestFirst))
+        {
+            $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
+        }
+
+        return $this->GetUrl("/api/forums/{$forumIdString}/articles", $getParameters);
     }
 
     /**
@@ -128,10 +155,12 @@ class DwApiOpen extends DwApiRss
      *
      * @param array|int $memberIds Member ID as int, or array of int.
      * @param int|null $forumId Forum ID (optional).
+     * @param null|string $articleType Article type filter (optional).
+     * @param bool $newestFirst Newest post first when true, Oldest post first when false, default true.
      * @param int|null $page Page number (optional).
      * @return bool|string JSON result, false on error.
      */
-    public function GetMemberArticles($memberIds, $forumId = null, $page = null)
+    public function GetMemberArticles($memberIds, $forumId = null, $articleType = null, $newestFirst = true, $page = null)
     {
         $memberIdString = $this->IdsToString($memberIds);
         if (empty($memberIdString))
@@ -140,9 +169,20 @@ class DwApiOpen extends DwApiRss
         }
 
         $getParameters = $this->GetPageParameter($page);
+
         if ($this->IsValidId($forumId))
         {
             $getParameters['forum_id'] = $forumId;
+        }
+
+        if ($this->IsArticleType($articleType))
+        {
+            $getParameters['filter'] = $articleType;
+        }
+
+        if (is_bool($newestFirst))
+        {
+            $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
         }
 
         return $this->GetUrl("/api/members/{$memberIdString}/articles", $getParameters);
