@@ -5,9 +5,9 @@ include 'DwApiOAuth.class.php';
 
 $dwApi = new DwApiOAuth('');
 
-$testBase = false;
-$testRss = false;
-$testOpen = false;
+$testBase = true;
+$testRss = true;
+$testOpen = true;
 $testOAuth = true;
 
 if ($testBase)                                                          // DwApiBase
@@ -159,30 +159,21 @@ if ($testOpen)                                                          // DwApi
 
 if ($testOAuth)                                                         // DwApiOAuth
 {
-    // todo EXPECTED different results
-
-    $result = $dwApi->GetArticles(null, 'interviews', true);            // list specific article types
-    $result = $dwApi->GetArticles(null, 'interviews', false);           // list specific article types
-
-    $result = $dwApi->GetForumArticles(17, 'tutorials');                // specific article types for forum 17
-    $result = $dwApi->GetForumArticles(17, 'tutorials', false);         // specific article types for forum 17, oldest first
-
-
     // same as DwApiOpen, just three additional article types
 
-    $articleTypes = $dwApi->GetArticleTypes();
-    $articleTypes[] = null;                                             // ignored
-    $articleTypes[] = 'invalid';                                        // ignored
-    foreach ($articleTypes as $articleType)
-    {
-        $result = $dwApi->GetArticles(null, $articleType);              // list specific article types
-        $result = $dwApi->GetArticles(null, $articleType, false);       // list specific article types
-
-        $result = $dwApi->GetForumArticles(17, $articleType);           // specific article types for forum 17
-        $result = $dwApi->GetForumArticles(17, $articleType, false);    // specific article types for forum 17, oldest first
-
-        $result = $dwApi->GetMemberArticles(94719, null, $articleType); // articles for member 94719
-    }
+    //$articleTypes = $dwApi->GetArticleTypes();
+    //$articleTypes[] = null;                                             // ignored
+    //$articleTypes[] = 'invalid';                                        // ignored
+    //foreach ($articleTypes as $articleType)
+    //{
+    //    $result = $dwApi->GetArticles(null, $articleType);              // list specific article types
+    //    $result = $dwApi->GetArticles(null, $articleType, false);       // list specific article types
+    //
+    //    $result = $dwApi->GetForumArticles(17, $articleType);           // specific article types for forum 17
+    //    $result = $dwApi->GetForumArticles(17, $articleType, false);    // specific article types for forum 17, oldest first
+    //
+    //    $result = $dwApi->GetMemberArticles(94719, null, $articleType); // articles for member 94719
+    //}
 
 
     // additional functionality
