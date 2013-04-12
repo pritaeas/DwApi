@@ -24,12 +24,12 @@ class DwApiCredentials
     /**
      * @var int Access token's last modified timestamp.
      */
-    protected $lastModified;
+    protected $lastModified = 0;
 
     /**
      * @var int Access token's time to live.
      */
-    protected $ttl = 600;
+    protected $ttl = 1800;
 
     /**
      * @param int $clientId Client ID.
@@ -41,7 +41,7 @@ class DwApiCredentials
     {
         $object = @unserialize($serializedObject);
 
-        if (get_class($object) != get_class())
+        if (!$object or (get_class($object) != 'DwApiCredentials'))
         {
             $object = new DwApiCredentials();
 
@@ -95,6 +95,7 @@ class DwApiCredentials
             else
             {
                 header("Location: $url");
+                exit();
             }
         }
 
