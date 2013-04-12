@@ -2,6 +2,11 @@
 class DwApiCredentials
 {
     /**
+     * @var string Access token.
+     */
+    public $AccessToken;
+
+    /**
      * @var int Client ID.
      */
     protected $clientId;
@@ -17,9 +22,14 @@ class DwApiCredentials
     protected $code;
 
     /**
-     * @var string Access token.
+     * @var int Access token's last modified timestamp.
      */
-    public $AccessToken;
+    protected $lastModified;
+
+    /**
+     * @var int Access token's time to live.
+     */
+    protected $ttl = 600;
 
     /**
      * @param int $clientId Client ID.
@@ -88,7 +98,7 @@ class DwApiCredentials
             }
         }
 
-        if (empty($this->AccessToken))
+        if (empty($this->AccessToken) or ($this->lastModified + $this->ttl < time()))
         {
             $ch = curl_init('http://www.daniweb.com/api/access_token');
 
@@ -120,6 +130,7 @@ class DwApiCredentials
                 $urlParts = parse_url($targetUrl);
                 parse_str($urlParts['query'], $queryParts);
                 $this->AccessToken = $queryParts['access_token'];
+                $this->lastModified = time();
             }
         }
     }
