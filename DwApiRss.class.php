@@ -26,7 +26,7 @@ class DwApiRss extends DwApiBase
             $url .= "/{$articleType}";
         }
 
-        return $this->GetUrl($url);
+        return $this->GetUrl($url, null, null, false);
     }
 }
 ?>

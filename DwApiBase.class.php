@@ -127,9 +127,10 @@ class DwApiBase {
      * @param string $path REST path to use.
      * @param array|null $getParameters GET parameters (optional).
      * @param array|null $postParameters POST parameters (optional).
+     * @param bool $jsonCheck Check for JSON false result (optional), default true.
      * @return bool|string URL page contents, false on error.
      */
-    protected function GetUrl($path, $getParameters = null, $postParameters = null)
+    protected function GetUrl($path, $getParameters = null, $postParameters = null, $jsonCheck = true)
     {
         $result = false;
         $url = $this->baseUrl . $path;
@@ -168,7 +169,7 @@ class DwApiBase {
             $result = @file_get_contents($url);
         }
 
-        if (is_string($result))
+        if ($jsonCheck and is_string($result))
         {
             // check if the returned json result contains a false success response
             $data = json_decode($result);

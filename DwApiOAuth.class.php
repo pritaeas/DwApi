@@ -83,9 +83,10 @@ class DwApiOAuth extends DwApiOpen
      * @param string $path REST path to use.
      * @param array|null $getParameters GET parameters (optional).
      * @param array|null $postParameters POST parameters (optional).
+     * @param bool $jsonCheck Check for JSON false result (optional), default true.
      * @return bool|string URL page contents, false on error.
      */
-    protected function GetUrl($path, $getParameters = null, $postParameters = null)
+    protected function GetUrl($path, $getParameters = null, $postParameters = null, $jsonCheck = true)
     {
         if ($this->accessToken != null)
         {
@@ -99,7 +100,7 @@ class DwApiOAuth extends DwApiOpen
             }
         }
 
-        return parent::GetUrl($path, $getParameters, $postParameters);
+        return parent::GetUrl($path, $getParameters, $postParameters, $jsonCheck);
     }
 }
 ?>
