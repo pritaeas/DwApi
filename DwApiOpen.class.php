@@ -7,17 +7,22 @@ class DwApiOpen extends DwApiRss
      * Get posts for a specific article.
      *
      * @param int $articleId Article ID.
-     * @param int $page Page number (optional).
+     * @param int $page Page number (optional), default 1.
      * @return mixed JSON result, false on error.
      */
-    public function GetArticlePosts($articleId, $page = null)
+    public function GetArticlePosts($articleId, $page = 1)
     {
         if (!$this->IsValidId($articleId))
         {
             return false;
         }
 
-        return $this->GetUrl("/api/articles/{$articleId}/posts", $this->GetPageParameter($page));
+        if (!$this->IsValidId($page))
+        {
+            return false;
+        }
+
+        return $this->GetUrl("/api/articles/{$articleId}/posts", array ('page' => $page));
     }
 
     /**
@@ -26,17 +31,21 @@ class DwApiOpen extends DwApiRss
      * @param array|int|null $articleIds Article ID as int, or array of int (optional).
      * @param null|string $articleType Article type filter (optional).
      * @param bool $newestFirst Newest post first when true, Oldest post first when false, default true.
-     * @param int|null $page Page number (optional).
+     * @param int $page Page number (optional), default 1.
      * @return bool|string JSON result, false on error.
      */
-    public function GetArticles($articleIds = null, $articleType = null, $newestFirst = true, $page = null)
+    public function GetArticles($articleIds = null, $articleType = null, $newestFirst = true, $page = 1)
     {
+        if (!$this->IsValidId($page))
+        {
+            return false;
+        }
+
         $url = "/api/articles";
-        $getParameters = $this->GetPageParameter($page);
+        $getParameters = array ('page' => $page);
 
         $articleIdString = $this->IdsToString($articleIds);
-        if (!empty($articleIdString))
-        {
+        if (!empty($articleIdString)) {
             $url .= "/{$articleIdString}";
         }
 
@@ -47,6 +56,7 @@ class DwApiOpen extends DwApiRss
 
         if (is_bool($newestFirst))
         {
+            // todo change to orderBy type
             $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
         }
 
@@ -59,10 +69,10 @@ class DwApiOpen extends DwApiRss
      * @param mixed $forumIds Forum ID as int, or array of int.
      * @param null|string $articleType Article type filter (optional).
      * @param bool $newestFirst Newest post first when true, Oldest post first when false, default true.
-     * @param int|null $page Page number.
+     * @param int $page Page number (optional), default 1.
      * @return bool|string JSON result, false on error.
      */
-    public function GetForumArticles($forumIds, $articleType = null, $newestFirst = true, $page = null)
+    public function GetForumArticles($forumIds, $articleType = null, $newestFirst = true, $page = 1)
     {
         $forumIdString = $this->IdsToString($forumIds);
         if (empty($forumIdString))
@@ -70,7 +80,12 @@ class DwApiOpen extends DwApiRss
             return false;
         }
 
-        $getParameters = $this->GetPageParameter($page);
+        if (!$this->IsValidId($page))
+        {
+            return false;
+        }
+
+        $getParameters = array ('page' => $page);
 
         if ($this->IsArticleType($articleType))
         {
@@ -79,6 +94,7 @@ class DwApiOpen extends DwApiRss
 
         if (is_bool($newestFirst))
         {
+            // todo change to orderBy type
             $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
         }
 
@@ -89,7 +105,7 @@ class DwApiOpen extends DwApiRss
      * Get posts for a specific forum.
      *
      * @param int $forumId Forum ID.
-     * @param int|null $page Page number (optional).
+     * @param int $page Page number (optional), default 1.
      * @return bool|string JSON result, false on error.
      */
     public function GetForumPosts($forumId, $page = null)
@@ -99,7 +115,12 @@ class DwApiOpen extends DwApiRss
             return false;
         }
 
-        return $this->GetUrl("/api/forums/{$forumId}/posts", $this->GetPageParameter($page));
+        if (!$this->IsValidId($page))
+        {
+            return false;
+        }
+
+        return $this->GetUrl("/api/forums/{$forumId}/posts", array ('page' => $page));
     }
 
     /**
@@ -157,10 +178,10 @@ class DwApiOpen extends DwApiRss
      * @param int|null $forumId Forum ID (optional).
      * @param null|string $articleType Article type filter (optional).
      * @param bool $newestFirst Newest post first when true, Oldest post first when false, default true.
-     * @param int|null $page Page number (optional).
+     * @param int $page Page number (optional), default 1.
      * @return bool|string JSON result, false on error.
      */
-    public function GetMemberArticles($memberIds, $forumId = null, $articleType = null, $newestFirst = true, $page = null)
+    public function GetMemberArticles($memberIds, $forumId = null, $articleType = null, $newestFirst = true, $page = 1)
     {
         $memberIdString = $this->IdsToString($memberIds);
         if (empty($memberIdString))
@@ -168,7 +189,12 @@ class DwApiOpen extends DwApiRss
             return false;
         }
 
-        $getParameters = $this->GetPageParameter($page);
+        if (!$this->IsValidId($page))
+        {
+            return false;
+        }
+
+        $getParameters = array ('page' => $page);
 
         if ($this->IsValidId($forumId))
         {
@@ -209,25 +235,28 @@ class DwApiOpen extends DwApiRss
      *
      * @param int $memberId Member ID.
      * @param null|string $postType Post type to filter on (optional).
-     * @param int|null $page Page number (optional).
+     * @param int $page Page number (optional), default 1.
      * @return bool|string JSON result, false on error.
      */
-    public function GetMemberPosts($memberId, $postType = null, $page = null)
+    public function GetMemberPosts($memberId, $postType = null, $page = 1)
     {
         if (!$this->IsValidId($memberId))
         {
             return false;
         }
 
+        if (!$this->IsValidId($page))
+        {
+            return false;
+        }
+
         $url = "/api/members/{$memberId}/posts";
-        $getParameters = array();
+        $getParameters = array('page' => $page);
 
         if ($this->IsPostType($postType))
         {
-            $getParameters = array ('filter' => $postType);
+            $getParameters['filter'] = $postType;
         }
-
-        $getParameters = array_merge($getParameters, $this->GetPageParameter($page));
 
         return $this->GetUrl($url, $getParameters);
     }
@@ -236,28 +265,38 @@ class DwApiOpen extends DwApiRss
      * Get reputation comments for a specific member.
      *
      * @param int $memberId Member ID.
-     * @param int|null $page Page number (optional).
+     * @param int $page Page number (optional), default 1.
      * @return bool|string JSON result, false on error.
      */
-    public function GetMemberReputationComments($memberId, $page = null)
+    public function GetMemberReputationComments($memberId, $page = 1)
     {
         if (!$this->IsValidId($memberId))
         {
             return false;
         }
 
-        return $this->GetUrl("/api/members/{$memberId}/comments", $this->GetPageParameter($page));
+        if (!$this->IsValidId($page))
+        {
+            return false;
+        }
+
+        return $this->GetUrl("/api/members/{$memberId}/comments", array ('page' => $page));
     }
 
     /**
      * Get a list of members, or a list of specific members.
      *
      * @param mixed $members Member as string, member ID as int or array of int (optional).
-     * @param int|null $page Page number (optional).
+     * @param int $page Page number (optional), default 1.
      * @return bool|string JSON result, false on error.
      */
-    public function GetMembers($members = null, $page = null)
+    public function GetMembers($members = null, $page = 1)
     {
+        if (!$this->IsValidId($page))
+        {
+            return false;
+        }
+
         $url = '/api/members';
 
         if (is_string($members))
@@ -268,7 +307,7 @@ class DwApiOpen extends DwApiRss
         {
             $memberIdString = $this->IdsToString($members);
             $url .= empty($memberIdString) ? '' : "/{$memberIdString}";
-            $getParameters = $this->GetPageParameter($page);
+            $getParameters = array ('page' => $page);
         }
 
         return $this->GetUrl($url, $getParameters);
@@ -294,57 +333,66 @@ class DwApiOpen extends DwApiRss
      * Get a list of posts, or a list of specific posts.
      *
      * @param mixed $postIds Post ID as int, or array of int.
-     * @param int|null $page Page number (optional).
+     * @param int $page Page number (optional), default 1.
      * @return bool|string JSON result, false on error.
      */
-    public function GetPosts($postIds = null, $page = null)
+    public function GetPosts($postIds = null, $page = 1)
     {
+        if (!$this->IsValidId($page))
+        {
+            return false;
+        }
+
         $url = "/api/posts";
 
         $postIdString = $this->IdsToString($postIds);
         $url .= empty($postIdString) ? '' : "/{$postIdString}";
 
-        return $this->GetUrl($url, $this->GetPageParameter($page));
+        return $this->GetUrl($url, array ('page' => $page));
     }
 
     /**
      * Searches articles for the given query.
      *
      * @param string $query Search query.
-     * @param int|null $page Page number (optional).
+     * @param int $page Page number (optional), default 1.
      * @return bool|string JSON result, false on error.
      */
-    public function SearchArticles($query, $page = null)
+    public function SearchArticles($query, $page = 1)
     {
         if (empty($query) or !is_string($query))
         {
             return false;
         }
 
-        $getParameters = array ('query' => urlencode($query));
-        $getParameters = array_merge($getParameters, $this->GetPageParameter($page));
+        if (!$this->IsValidId($page))
+        {
+            return false;
+        }
 
-        return $this->GetUrl('/api/articles/search', $getParameters);
+        return $this->GetUrl('/api/articles/search', array ('query' => urlencode($query), 'page' => $page));
     }
 
     /**
      * Searches members for the given member name.
      *
      * @param string $memberName Member name to search.
-     * @param int|null $page Page number (optional).
+     * @param int $page Page number (optional), default 1.
      * @return bool|string JSON result, false on error.
      */
-    public function SearchMembers($memberName, $page = null)
+    public function SearchMembers($memberName, $page = 1)
     {
         if (empty($memberName) or !is_string($memberName))
         {
             return false;
         }
 
-        $getParameters = array ('query' => urlencode($memberName));
-        $getParameters = array_merge($getParameters, $this->GetPageParameter($page));
+        if (!$this->IsValidId($page))
+        {
+            return false;
+        }
 
-        return $this->GetUrl('/api/members/search', $getParameters);
+        return $this->GetUrl('/api/members/search', array ('query' => urlencode($memberName), 'page' => $page));
     }
 }
 ?>

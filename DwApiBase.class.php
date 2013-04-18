@@ -107,24 +107,6 @@ class DwApiBase {
     }
 
     /**
-     * Builds the query parameter for a specific page.
-     *
-     * @param int $page Page number.
-     * @return array Query parameter, or empty array.
-     */
-    protected function GetPageParameter($page)
-    {
-        $result = array();
-
-        if ($this->IsValidId($page))
-        {
-            $result = array ('page' => $page);
-        }
-
-        return $result;
-    }
-
-    /**
      * Get the REST path contents as a string.
      *
      * @param string $path REST path to use.
@@ -223,7 +205,7 @@ class DwApiBase {
      */
     protected function IsArticleType($articleType)
     {
-        return in_array($articleType, $this->GetArticleTypes($this->accessToken == null));
+        return in_array($articleType, $this->GetArticleTypes());
     }
 
     /**
