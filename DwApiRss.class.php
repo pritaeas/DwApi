@@ -9,7 +9,7 @@ class DwApiRss extends DwApiBase
      * Items in the feed will be no older than 90 days, and no more than 100 items.
      *
      * @param int|null $forumId Forum ID (optional).
-     * @param null|string $articleType Article type to filter on (optional).
+     * @param null|string $articleType RSS article type to filter on (optional).
      * @return bool|string RSS feed, false on error.
      */ 
     public function GetFeed($forumId = null, $articleType = null)
