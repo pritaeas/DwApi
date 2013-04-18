@@ -8,12 +8,12 @@ Base class with common properties and methods. [Read more](https://github.com/pr
 
 ### DwApiRss (extends DwApiBase)
 
-Class to get (filtered) RSS feeds.
+Class to get (filtered) RSS feeds. [Read more](https://github.com/pritaeas/DwApi/wiki/DwApiRss).
 
 ### DwApiOpen (extends DwApiRss)
 
-Class for open API methods.
+Class for open API methods. [Read more](https://github.com/pritaeas/DwApi/wiki/DwApiOpen).
 
 ### DwApiOAuth (extends DwApiOpen)
 
-Class for API methods that require an access token.
+Class for API methods that require an access token. [Read more](https://github.com/pritaeas/DwApi/wiki/DwApiOAuth).
