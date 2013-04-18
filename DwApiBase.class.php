@@ -1,4 +1,6 @@
 <?php
+include 'DwApiException.class.php';
+
 class DwApiBase {
     /**
      * @var null|string Access token.

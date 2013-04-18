@@ -15,12 +15,19 @@ class DwApiOAuth extends DwApiOpen
      * Get private messages for the logged in user.
      *
      * @param bool $inbox Inbox when true, outbox when false.
+     * @throws DwApiException If access token is not set.
      * @return bool|string JSON result, false on error.
      */
     public function GetPrivateMessages($inbox = true)
     {
-        if (($this->accessToken == null) or !is_bool($inbox))
+        if ($this->accessToken == null)
         {
+            throw DwApiException::Create(4001);
+        }
+
+        if (!is_bool($inbox))
+        {
+            // todo replace with boxType
             return false;
         }
 
@@ -32,11 +39,17 @@ class DwApiOAuth extends DwApiOpen
      *
      * @param int $postId Post ID.
      * @param bool $upVote Upvote when true, downvote when false.
+     * @throws DwApiException If access token is not set.
      * @return bool|string JSON result, false on error.
      */
     public function VotePost($postId, $upVote = true)
     {
-        if (($this->accessToken == null) or !$this->IsValidId($postId) or !is_bool($upVote))
+        if ($this->accessToken == null)
+        {
+            throw DwApiException::Create(4001);
+        }
+
+        if (!$this->IsValidId($postId) or !is_bool($upVote))
         {
             return false;
         }
@@ -49,11 +62,17 @@ class DwApiOAuth extends DwApiOpen
      *
      * @param int $articleId Article ID.
      * @param bool $watch Watch the article when true, unwatch when false.
+     * @throws DwApiException If access token is not set.
      * @return bool|string JSON result, false on error.
      */
     public function WatchArticle($articleId, $watch = true)
     {
-        if (($this->accessToken == null) or !$this->IsValidId($articleId) or !is_bool($watch))
+        if ($this->accessToken == null)
+        {
+            throw DwApiException::Create(4001);
+        }
+
+        if (!$this->IsValidId($articleId) or !is_bool($watch))
         {
             return false;
         }
@@ -64,13 +83,14 @@ class DwApiOAuth extends DwApiOpen
     /**
      * Get logged in user details.
      *
+     * @throws DwApiException If access token is not set.
      * @return bool|string JSON result, false on error.
      */
     public function WhoAmI()
     {
         if ($this->accessToken == null)
         {
-            return false;
+            throw DwApiException::Create(4001);
         }
 
         return $this->GetUrl('/api/me');

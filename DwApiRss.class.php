@@ -8,7 +8,7 @@ class DwApiRss extends DwApiBase
      * Invalid forum ID's and article types not accepted.
      * Items in the feed will be no older than 90 days, and no more than 100 items.
      *
-     * @param int|null $forumId Forum ID (optional).
+     * @param null|int $forumId Forum ID (optional).
      * @param null|string $articleType RSS article type to filter on (optional).
      * @return bool|string RSS feed, false on error.
      */ 
