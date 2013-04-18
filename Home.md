@@ -4,7 +4,7 @@ Classes to get information from the [DaniWeb API](http://www.daniweb.com/api/hom
 
 ### DwApiBase
 
-Base class with common properties and methods.
+Base class with common properties and methods. [Read more](https://github.com/pritaeas/DwApi/wiki/DwApiBase).
 
 ### DwApiRss (extends DwApiBase)
 
