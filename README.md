@@ -14,7 +14,3 @@ Classes to get information from the [DaniWeb API](http://www.daniweb.com/api/hom
       |
     DwApiOAuth (extends DwApiOpen)
     Class for API methods that require an access token.
-
-
-    DwApiCredentials
-    Helper class to store id, credentials, code and token (unused).
