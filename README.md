@@ -14,3 +14,5 @@ Classes to get information from the [DaniWeb API](http://www.daniweb.com/api/hom
       |
     DwApiOAuth (extends DwApiOpen)
     Class for API methods that require an access token.
+
+Documentation in the [wiki](https://github.com/pritaeas/DwApi/wiki).
