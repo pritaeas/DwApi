@@ -25,6 +25,9 @@ class DwApiBase {
         'watching' => false
     );
 
+    /**
+     * @var string Base URL for the DaniWeb API.
+     */
     protected $baseUrl = 'http://www.daniweb.com';
 
     /**
