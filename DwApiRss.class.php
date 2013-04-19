@@ -12,7 +12,7 @@ class DwApiRss extends DwApiBase
      * @param null|string $rssArticleType RSS article type to filter on (optional).
      * @throws DwApiException EX_INVALID_INT on invalid forum ID.
      * @throws DwApiException EX_INVALID_TYPE_RSS_ARTICLE on invalid RSS article type.
-     * @return bool|string RSS feed, false on error.
+     * @return string RSS feed.
      */ 
     public function GetFeed($forumId = null, $rssArticleType = null)
     {
