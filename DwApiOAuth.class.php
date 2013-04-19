@@ -48,26 +48,6 @@ class DwApiOAuth extends DwApiOpen
     }
 
     /**
-     * Get the list of supported vote types.
-     *
-     * @return array List of vote types.
-     */
-    public function GetVoteTypes()
-    {
-        return array_values($this->voteTypes);
-    }
-
-    /**
-     * Get the list of supported watch types.
-     *
-     * @return array List of watch types.
-     */
-    public function GetWatchTypes()
-    {
-        return array_values($this->watchTypes);
-    }
-
-    /**
      * Get private messages for the logged in user.
      *
      * @param string $mailBoxType Mail box type (required).
@@ -88,6 +68,26 @@ class DwApiOAuth extends DwApiOpen
         }
 
         return $this->GetUrl("/api/me/{$mailBoxType}");
+    }
+
+    /**
+     * Get the list of supported vote types.
+     *
+     * @return array List of vote types.
+     */
+    public function GetVoteTypes()
+    {
+        return array_values($this->voteTypes);
+    }
+
+    /**
+     * Get the list of supported watch types.
+     *
+     * @return array List of watch types.
+     */
+    public function GetWatchTypes()
+    {
+        return array_values($this->watchTypes);
     }
 
     /**
