@@ -12,23 +12,23 @@ class DwApiException extends Exception
     const EX_CONFIGURATION = 1001;
 
     /**
-     * Invalid parameters exceptions.
+     * Invalid parameter exceptions.
      */
     const EX_ACCESS_TOKEN = 2001;
 
-    const EX_INVALID_ARRAY = 2002;
-    const EX_INVALID_BOOL = 2003;
-    const EX_INVALID_INT = 2004;
-    const EX_INVALID_STRING = 2005;
+    const EX_INVALID_ARRAY = 2102;
+    const EX_INVALID_BOOL = 2103;
+    const EX_INVALID_INT = 2104;
+    const EX_INVALID_STRING = 2105;
 
-    const EX_INVALID_TYPE_ARTICLE = 2101;
-    const EX_INVALID_TYPE_POST = 2102;
-    const EX_INVALID_TYPE_RELATION = 2103;
-    const EX_INVALID_TYPE_RSS_ARTICLE = 2104;
+    const EX_INVALID_TYPE_ARTICLE = 2201;
+    const EX_INVALID_TYPE_POST = 2202;
+    const EX_INVALID_TYPE_RELATION = 2203;
+    const EX_INVALID_TYPE_RSS_ARTICLE = 2204;
 
-    const EX_INVALID_TYPE_MAIL_BOX = 2201;
-    const EX_INVALID_TYPE_VOTE = 2202;
-    const EX_INVALID_TYPE_WATCH = 2203;
+    const EX_INVALID_TYPE_MAIL_BOX = 2301;
+    const EX_INVALID_TYPE_VOTE = 2302;
+    const EX_INVALID_TYPE_WATCH = 2303;
 
     /**
      * Communication exceptions.
