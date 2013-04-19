@@ -5,6 +5,8 @@ class DwApiException extends Exception
 
     protected $exceptions = array
     (
+        2011 => 'Invalid forum ID',
+        2021 => 'Invalid RSS article type',
         4001 => 'Access token required',
         4011 => 'Invalid article ID',
         4012 => 'Invalid post ID',

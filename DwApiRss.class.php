@@ -9,19 +9,21 @@ class DwApiRss extends DwApiBase
      * Items in the feed will be no older than 90 days, and no more than 100 items.
      *
      * @param null|int $forumId Forum ID (optional).
-     * @param null|string $articleType RSS article type to filter on (optional).
+     * @param null|string $rssArticleType RSS article type to filter on (optional).
+     * @throws DwApiException 2011 on invalid forum ID.
+     * @throws DwApiException 2021 on invalid RSS article type.
      * @return bool|string RSS feed, false on error.
      */ 
-    public function GetFeed($forumId = null, $articleType = null)
+    public function GetFeed($forumId = null, $rssArticleType = null)
     {
         if (($forumId != null) and !$this->IsValidId($forumId))
         {
-            return false;
+            throw new DwApiException(null, 2011);
         }
 
-        if (($articleType != null) and !$this->IsRssArticleType($articleType))
+        if (($rssArticleType != null) and !$this->IsRssArticleType($rssArticleType))
         {
-            return false;
+            throw new DwApiException(null, 2021);
         }
 
         $url = '/rss/pull';
@@ -31,9 +33,9 @@ class DwApiRss extends DwApiBase
             $url .= "/{$forumId}";
         }
 
-        if ($articleType != null)
+        if ($rssArticleType != null)
         {
-            $url .= "/{$articleType}";
+            $url .= "/{$rssArticleType}";
         }
 
         return $this->GetUrl($url, null, null, false);
