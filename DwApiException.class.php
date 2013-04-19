@@ -3,7 +3,7 @@ class DwApiException extends Exception
 {
     const UNKNOWN_EXCEPTION = 'Unknown Exception';
 
-    protected static $exceptions = array
+    protected $exceptions = array
     (
         4001 => 'Access token required',
         4011 => 'Invalid article ID',
@@ -15,7 +15,7 @@ class DwApiException extends Exception
 
     public function __construct($message = null, $code = 0, Exception $previous = null)
     {
-        $message = in_array($code, array_keys(self::$exceptions)) ? self::$exceptions[$code] : UNKNOWN_EXCEPTION;
+        $message = in_array($code, array_keys($this->exceptions)) ? $this->exceptions[$code] : self::UNKNOWN_EXCEPTION;
         parent::__construct($message, $code, $previous);
     }
 }
