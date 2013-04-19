@@ -9,7 +9,7 @@ class DwApiBase {
 
     /**
      * @var array List of supported article types.
-     * True indicates supported in open API, false for OAuth API.
+     * True indicates supported in open API, false for token API.
      */
     protected $articleTypes = array
     (

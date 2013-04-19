@@ -1,7 +1,7 @@
 <?php
 include 'DwApiOpen.class.php';
 
-class DwApiOAuth extends DwApiOpen
+class DwApiToken extends DwApiOpen
 {
     /**
      * @var array List of supported mail box types.
