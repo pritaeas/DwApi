@@ -72,6 +72,8 @@ class DwApiOpen extends DwApiRss
      * @param null|string $articleType Article type filter (optional).
      * @param bool $newestFirst Newest post first when true, Oldest post first when false, default true.
      * @param int $page Page number (optional), default 1.
+     * @throws DwApiException EX_INVALID_INT_ARRAY thrown on invalid forum IDs.
+     * @throws DwApiException EX_INVALID_TYPE_ARTICLE thrown on non-null invalid article type.
      * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
      * @return string JSON result.
      */
@@ -80,7 +82,12 @@ class DwApiOpen extends DwApiRss
         $forumIdString = $this->IdsToString($forumIds);
         if (empty($forumIdString))
         {
-            return false;
+            throw new DwApiException($forumIds, DwApiException::EX_INVALID_INT_ARRAY);
+        }
+
+        if (($articleType != null) and !$this->IsArticleType($articleType))
+        {
+            throw new DwApiException('$articleType', DwApiException::EX_INVALID_TYPE_ARTICLE);
         }
 
         if (!$this->IsValidId($page))
@@ -90,7 +97,7 @@ class DwApiOpen extends DwApiRss
 
         $getParameters = array ('page' => $page);
 
-        if ($this->IsArticleType($articleType))
+        if ($articleType != null)
         {
             $getParameters['filter'] = $articleType;
         }
@@ -109,14 +116,14 @@ class DwApiOpen extends DwApiRss
      *
      * @param int $forumId Forum ID (required).
      * @param int $page Page number (optional), default 1.
-     * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
+     * @throws DwApiException EX_INVALID_INT thrown on invalid forum ID or page number.
      * @return string JSON result.
      */
     public function GetForumPosts($forumId, $page = 1)
     {
         if (!$this->IsValidId($forumId))
         {
-            return false;
+            throw new DwApiException('$forumId', DwApiException::EX_INVALID_INT);
         }
 
         if (!$this->IsValidId($page))
@@ -133,12 +140,22 @@ class DwApiOpen extends DwApiRss
      * @param null|int|array $forumIds Forum ID as int, or array of int (optional).
      * @param null|string $relation Forum relation type (optional).
      * @param bool $includeSelf Include the forumID in the result (optional), default false.
+     * @throws DwApiException EX_INVALID_TYPE_RELATION thrown on non-null invalid relation type.
      * @return string JSON result.
      */
     public function GetForums($forumIds = null, $relation = null, $includeSelf = false)
     {
+        if (($relation != null) and !$this->IsRelationType($relation))
+        {
+            throw new DwApiException('$relation', DwApiException::EX_INVALID_TYPE_RELATION);
+        }
+
+        if (!is_bool($includeSelf))
+        {
+            throw new DwApiException('$includeSelf', DwApiException::EX_INVALID_BOOL);
+        }
+
         $url = '/api/forums';
-        $getParameters = array();
 
         $forumIdString = $this->IdsToString($forumIds);
         if (!empty($forumIdString))
@@ -146,15 +163,12 @@ class DwApiOpen extends DwApiRss
             $url .= "/{$forumIdString}";
         }
 
-        if ($this->IsRelationType($relation))
+        if ($relation != null)
         {
             $url .= "/{$relation}";
         }
 
-        if (is_bool($includeSelf))
-        {
-            $getParameters = array ('include_self' => $includeSelf);
-        }
+        $getParameters = array ('include_self' => $includeSelf);
 
         return $this->GetUrl($url, $getParameters);
     }
@@ -163,13 +177,14 @@ class DwApiOpen extends DwApiRss
      * Get activities for a specific member.
      *
      * @param int $memberId Member ID (required).
+     * @throws DwApiException EX_INVALID_INT thrown on invalid member ID.
      * @return string JSON result.
      */
     public function GetMemberActivityPoints($memberId)
     {
         if (!$this->IsValidId($memberId))
         {
-            return false;
+            throw new DwApiException('$memberId', DwApiException::EX_INVALID_INT);
         }
 
         return $this->GetUrl("/api/members/{$memberId}/activities");
@@ -183,6 +198,10 @@ class DwApiOpen extends DwApiRss
      * @param null|string $articleType Article type filter (optional).
      * @param bool $newestFirst Newest post first when true, Oldest post first when false, default true.
      * @param int $page Page number (optional), default 1.
+     * @throws DwApiException EX_INVALID_INT_ARRAY thrown on invalid member IDs.
+     * @throws DwApiException EX_INVALID_INT thrown on non-null invalid forum ID.
+     * @throws DwApiException EX_INVALID_TYPE_ARTICLE thrown on non-null invalid article type.
+     * @throws DwApiException EX_INVALID_BOOL thrown on invalid newest first.
      * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
      * @return string JSON result.
      */
@@ -191,7 +210,22 @@ class DwApiOpen extends DwApiRss
         $memberIdString = $this->IdsToString($memberIds);
         if (empty($memberIdString))
         {
-            return false;
+            throw new DwApiException('$memberIds', DwApiException::EX_INVALID_INT_ARRAY);
+        }
+
+        if (($forumId != null) and !$this->IsValidId($forumId))
+        {
+            throw new DwApiException('$forumId', DwApiException::EX_INVALID_INT);
+        }
+
+        if (($articleType != null) and !$this->IsArticleType($articleType))
+        {
+            throw new DwApiException('$articleType', DwApiException::EX_INVALID_TYPE_ARTICLE);
+        }
+
+        if (!is_bool($newestFirst))
+        {
+            throw new DwApiException('$newestFirst', DwApiException::EX_INVALID_BOOL);
         }
 
         if (!$this->IsValidId($page))
@@ -201,20 +235,17 @@ class DwApiOpen extends DwApiRss
 
         $getParameters = array ('page' => $page);
 
-        if ($this->IsValidId($forumId))
+        if ($forumId != null)
         {
             $getParameters['forum_id'] = $forumId;
         }
 
-        if ($this->IsArticleType($articleType))
+        if ($articleType != null)
         {
             $getParameters['filter'] = $articleType;
         }
 
-        if (is_bool($newestFirst))
-        {
-            $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
-        }
+        $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
 
         return $this->GetUrl("/api/members/{$memberIdString}/articles", $getParameters);
     }
@@ -223,13 +254,14 @@ class DwApiOpen extends DwApiRss
      * Get endorsements for a specific member.
      *
      * @param int $memberId Member ID (required).
+     * @throws DwApiException EX_INVALID_INT thrown on invalid member ID.
      * @return string JSON result.
      */
     public function GetMemberEndorsements($memberId)
     {
         if (!$this->IsValidId($memberId))
         {
-            return false;
+            throw new DwApiException('$memberId', DwApiException::EX_INVALID_INT);
         }
 
         return $this->GetUrl("/api/members/{$memberId}/endorsements");
@@ -241,6 +273,8 @@ class DwApiOpen extends DwApiRss
      * @param int $memberId Member ID (required).
      * @param null|string $postType Post type to filter on (optional).
      * @param int $page Page number (optional), default 1.
+     * @throws DwApiException EX_INVALID_INT thrown on invalid member ID.
+     * @throws DwApiException EX_INVALID_TYPE_POST thrown on non-null invalid post type.
      * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
      * @return string JSON result.
      */
@@ -248,7 +282,12 @@ class DwApiOpen extends DwApiRss
     {
         if (!$this->IsValidId($memberId))
         {
-            return false;
+            throw new DwApiException('$memberId', DwApiException::EX_INVALID_INT);
+        }
+
+        if (($postType != null) and !$this->IsPostType($postType))
+        {
+            throw new DwApiException('$postType', DwApiException::EX_INVALID_TYPE_POST);
         }
 
         if (!$this->IsValidId($page))
@@ -257,9 +296,10 @@ class DwApiOpen extends DwApiRss
         }
 
         $url = "/api/members/{$memberId}/posts";
+
         $getParameters = array('page' => $page);
 
-        if ($this->IsPostType($postType))
+        if ($postType != null)
         {
             $getParameters['filter'] = $postType;
         }
@@ -272,14 +312,14 @@ class DwApiOpen extends DwApiRss
      *
      * @param int $memberId Member ID (required).
      * @param int $page Page number (optional), default 1.
-     * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
+     * @throws DwApiException EX_INVALID_INT thrown on invalid member ID or page number.
      * @return string JSON result.
      */
     public function GetMemberReputationComments($memberId, $page = 1)
     {
         if (!$this->IsValidId($memberId))
         {
-            return false;
+            throw new DwApiException('$memberId', DwApiException::EX_INVALID_INT);
         }
 
         if (!$this->IsValidId($page))
@@ -325,13 +365,14 @@ class DwApiOpen extends DwApiRss
      * Get reputation comments for a specific post.
      *
      * @param int $postId Post ID (required).
+     * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
      * @return string JSON result.
      */
     public function GetPostReputationComments($postId)
     {
         if (!$this->IsValidId($postId))
         {
-            return false;
+            throw new DwApiException('$postId', DwApiException::EX_INVALID_INT);
         }
 
         return $this->GetUrl("/api/posts/{$postId}/comments");
@@ -365,6 +406,7 @@ class DwApiOpen extends DwApiRss
      *
      * @param string $query Search query (required).
      * @param int $page Page number (optional), default 1.
+     * @throws DwApiException EX_INVALID_STRING thrown on invalid or empty query.
      * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
      * @return string JSON result.
      */
@@ -372,7 +414,7 @@ class DwApiOpen extends DwApiRss
     {
         if (empty($query) or !is_string($query))
         {
-            return false;
+            throw new DwApiException('$query', DwApiException::EX_INVALID_STRING);
         }
 
         if (!$this->IsValidId($page))
@@ -388,6 +430,7 @@ class DwApiOpen extends DwApiRss
      *
      * @param string $memberName Member name to search (required).
      * @param int $page Page number (optional), default 1.
+     * @throws DwApiException EX_INVALID_STRING thrown on invalid or empty member name.
      * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
      * @return string JSON result.
      */
@@ -395,7 +438,7 @@ class DwApiOpen extends DwApiRss
     {
         if (empty($memberName) or !is_string($memberName))
         {
-            return false;
+            throw new DwApiException('$memberName', DwApiException::EX_INVALID_STRING);
         }
 
         if (!$this->IsValidId($page))

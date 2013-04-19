@@ -20,6 +20,7 @@ class DwApiException extends Exception
     const EX_INVALID_BOOL = 2103;
     const EX_INVALID_INT = 2104;
     const EX_INVALID_STRING = 2105;
+    const EX_INVALID_INT_ARRAY = 2106;
 
     const EX_INVALID_TYPE_ARTICLE = 2201;
     const EX_INVALID_TYPE_POST = 2202;
@@ -53,6 +54,7 @@ class DwApiException extends Exception
         self::EX_INVALID_BOOL => 'Invalid parameter, boolean expected',
         self::EX_INVALID_INT => 'Invalid parameter, positive integer expected',
         self::EX_INVALID_STRING => 'Invalid parameter, non-empty string expected',
+        self::EX_INVALID_INT_ARRAY => 'Invalid parameter, positive integer or array of integer expected',
 
         self::EX_INVALID_TYPE_ARTICLE => 'Invalid parameter, article type expected',
         self::EX_INVALID_TYPE_POST => 'Invalid parameter, post type expected',

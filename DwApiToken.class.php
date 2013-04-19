@@ -64,7 +64,7 @@ class DwApiToken extends DwApiOpen
 
         if (!$this->IsMailBoxType($mailBoxType))
         {
-            throw new DwApiException('$mailBoxType', EX_INVALID_TYPE_MAIL_BOX);
+            throw new DwApiException('$mailBoxType', DwApiException::EX_INVALID_TYPE_MAIL_BOX);
         }
 
         return $this->GetUrl("/api/me/{$mailBoxType}");
