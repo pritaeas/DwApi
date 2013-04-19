@@ -115,10 +115,37 @@ class DwApiBase {
      * @param null|array $getParameters GET parameters (optional).
      * @param null|array $postParameters POST parameters (optional).
      * @param bool $jsonCheck Check for JSON false result (optional), default true.
+     * @throws DwApiException EX_INVALID_STRING on invalid or empty path.
+     * @throws DwApiException EX_INVALID_ARRAY on invalid array $getParameters or $postParameters.
+     * @throws DwApiException EX_INVALID_BOOL on invalid bool $jsonCheck.
+     * @throws DwApiException EX_CONFIGURATION on disabled curl and allow_url_fopen.
+     * @throws DwApiException EX_CURL on curl failure.
+     * @throws DwApiException EX_FOPEN on file_get_contents failure.
+     * @throws DwApiException EX_DANIWEB on invalid request or no data.
      * @return bool|string URL page contents, false on error.
      */
     protected function GetUrl($path, $getParameters = null, $postParameters = null, $jsonCheck = true)
     {
+        if (!is_string($path) or empty($path))
+        {
+            throw new DwApiException('$path', DwApiException::EX_INVALID_STRING);
+        }
+
+        if (($getParameters != null) and !is_array($getParameters))
+        {
+            throw new DwApiException('$getParameters', DwApiException::EX_INVALID_ARRAY);
+        }
+
+        if (($postParameters != null) and !is_array($postParameters))
+        {
+            throw new DwApiException('$postParameters', DwApiException::EX_INVALID_ARRAY);
+        }
+
+        if (!is_bool($jsonCheck))
+        {
+            throw new DwApiException('$jsonCheck', DwApiException::EX_INVALID_BOOL);
+        }
+
         $result = false;
         $url = $this->baseUrl . $path;
 
@@ -143,17 +170,33 @@ class DwApiBase {
                 $curlResult = curl_exec($ch);
                 $httpStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-                if (($httpStatus == 200) and $curlResult)
+                curl_close($ch);
+
+                if ($httpStatus == 200)
                 {
                     $result = $curlResult;
                 }
-                curl_close($ch);
+                else if ($httpStatus == 400)
+                {
+                    throw new DwApiException(null, DwApiException::EX_DANIWEB);
+                }
+                else
+                {
+                    throw new DwApiException(null, DwApiException::EX_CURL);
+                }
             }
         }
         else if (ini_get('allow_url_fopen'))
         {
-            // hide warning on invalid request, will return false
             $result = @file_get_contents($url);
+            if ($result === false)
+            {
+                throw new DwApiException(null, DwApiException::EX_FOPEN);
+            }
+        }
+        else
+        {
+            throw new DwApiException(null, DwApiException::EX_CONFIGURATION);
         }
 
         if ($jsonCheck and is_string($result))
@@ -162,7 +205,7 @@ class DwApiBase {
             $data = json_decode($result);
             if (isset($data) and isset($data->data) and isset($data->data->success) and !$data->data->success)
             {
-                $result = false;
+                throw new DwApiException(null, DwApiException::EX_DANIWEB);
             }
         }
 

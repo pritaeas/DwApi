@@ -10,20 +10,20 @@ class DwApiRss extends DwApiBase
      *
      * @param null|int $forumId Forum ID (optional).
      * @param null|string $rssArticleType RSS article type to filter on (optional).
-     * @throws DwApiException 2011 on invalid forum ID.
-     * @throws DwApiException 2021 on invalid RSS article type.
+     * @throws DwApiException EX_INVALID_INT on invalid forum ID.
+     * @throws DwApiException EX_INVALID_TYPE_RSS_ARTICLE on invalid RSS article type.
      * @return bool|string RSS feed, false on error.
      */ 
     public function GetFeed($forumId = null, $rssArticleType = null)
     {
         if (($forumId != null) and !$this->IsValidId($forumId))
         {
-            throw new DwApiException(null, 2011);
+            throw new DwApiException('$forumId', DwApiException::EX_INVALID_INT);
         }
 
         if (($rssArticleType != null) and !$this->IsRssArticleType($rssArticleType))
         {
-            throw new DwApiException(null, 2021);
+            throw new DwApiException('$rssArticleType', DwApiException::EX_INVALID_TYPE_RSS_ARTICLE);
         }
 
         $url = '/rss/pull';

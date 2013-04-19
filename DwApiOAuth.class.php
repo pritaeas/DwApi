@@ -51,20 +51,20 @@ class DwApiOAuth extends DwApiOpen
      * Get private messages for the logged in user.
      *
      * @param string $mailBoxType Mail box type (required).
-     * @throws DwApiException 4001 thrown on empty access token.
-     * @throws DwApiException 4021 thrown on invalid mail box type.
+     * @throws DwApiException EX_ACCESS_TOKEN thrown on empty access token.
+     * @throws DwApiException EX_INVALID_TYPE_MAIL_BOX thrown on invalid mail box type.
      * @return bool|string JSON result, false on error.
      */
     public function GetPrivateMessages($mailBoxType)
     {
         if ($this->accessToken == null)
         {
-            throw new DwApiException(null, 4001);
+            throw new DwApiException(null, DwApiException::EX_ACCESS_TOKEN);
         }
 
         if (!$this->IsMailBoxType($mailBoxType))
         {
-            throw new DwApiException(null, 4021);
+            throw new DwApiException('$mailBoxType', EX_INVALID_TYPE_MAIL_BOX);
         }
 
         return $this->GetUrl("/api/me/{$mailBoxType}");
@@ -95,26 +95,26 @@ class DwApiOAuth extends DwApiOpen
      *
      * @param int $postId Post ID (required).
      * @param string $voteType Vote type (required).
-     * @throws DwApiException 4001 thrown on empty access token.
-     * @throws DwApiException 4012 thrown on invalid post ID.
-     * @throws DwApiException 4022 thrown on invalid vote type.
+     * @throws DwApiException EX_ACCESS_TOKEN thrown on empty access token.
+     * @throws DwApiException EX_INVALID_INT thrown on invalid post ID.
+     * @throws DwApiException EX_INVALID_TYPE_VOTE thrown on invalid vote type.
      * @return bool|string JSON result, false on error.
      */
     public function VotePost($postId, $voteType)
     {
         if ($this->accessToken == null)
         {
-            throw new DwApiException(null, 4001);
+            throw new DwApiException(null, DwApiException::EX_ACCESS_TOKEN);
         }
 
         if (!$this->IsValidId($postId))
         {
-            throw new DwApiException(null, 4012);
+            throw new DwApiException('$postId', DwApiException::EX_INVALID_INT);
         }
 
         if (!$this->IsVoteType($voteType))
         {
-            throw new DwApiException(null, 4022);
+            throw new DwApiException('$voteType', DwApiException::EX_INVALID_TYPE_VOTE);
         }
 
         $vote = array_search($voteType, $this->voteTypes);
@@ -127,26 +127,26 @@ class DwApiOAuth extends DwApiOpen
      *
      * @param int $articleId Article ID (required).
      * @param bool $watchType Watch type (required).
-     * @throws DwApiException 4001 thrown on empty access token.
-     * @throws DwApiException 4011 thrown on invalid article ID.
-     * @throws DwApiException 4023 thrown on invalid watch type.
+     * @throws DwApiException EX_ACCESS_TOKEN thrown on empty access token.
+     * @throws DwApiException EX_INVALID_INT thrown on invalid article ID.
+     * @throws DwApiException EX_INVALID_TYPE_WATCH thrown on invalid watch type.
      * @return bool|string JSON result, false on error.
      */
     public function WatchArticle($articleId, $watchType)
     {
         if ($this->accessToken == null)
         {
-            throw new DwApiException(null, 4001);
+            throw new DwApiException(null, DwApiException::EX_ACCESS_TOKEN);
         }
 
         if (!$this->IsValidId($articleId))
         {
-            throw new DwApiException(null, 4011);
+            throw new DwApiException('$articleId', DwApiException::EX_INVALID_INT);
         }
 
         if (!$this->IsWatchType($watchType))
         {
-            throw new DwApiException(null, 4023);
+            throw new DwApiException('$watchType', DwApiException::EX_INVALID_TYPE_WATCH);
         }
 
         $watch = array_search($watchType, $this->watchTypes);
@@ -157,14 +157,14 @@ class DwApiOAuth extends DwApiOpen
     /**
      * Get logged in user details.
      *
-     * @throws DwApiException If access token is not set.
+     * @throws DwApiException EX_ACCESS_TOKEN thrown on empty access token.
      * @return bool|string JSON result, false on error.
      */
     public function WhoAmI()
     {
         if ($this->accessToken == null)
         {
-            throw new DwApiException(null, 4001);
+            throw new DwApiException(null, DwApiException::EX_ACCESS_TOKEN);
         }
 
         return $this->GetUrl('/api/me');
@@ -184,11 +184,11 @@ class DwApiOAuth extends DwApiOpen
     {
         if ($this->accessToken != null)
         {
-            if (!is_array($getParameters))
+            if ($getParameters == null)
             {
                 $getParameters = array ('access_token' => $this->accessToken);
             }
-            else if (!isset($getParameters['access_token']))
+            else if (is_array($getParameters))
             {
                 $getParameters['access_token'] = $this->accessToken;
             }

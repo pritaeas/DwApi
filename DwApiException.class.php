@@ -1,23 +1,80 @@
 <?php
 class DwApiException extends Exception
 {
-    const UNKNOWN_EXCEPTION = 'Unknown Exception';
+    /**
+     * Default exception message for unrecognized codes.
+     */
+    const EX_UNKNOWN = 'Unknown Exception';
 
-    protected $exceptions = array
+    /**
+     * Configuration exceptions.
+     */
+    const EX_CONFIGURATION = 1001;
+
+    /**
+     * Invalid parameters exceptions.
+     */
+    const EX_ACCESS_TOKEN = 2001;
+
+    const EX_INVALID_ARRAY = 2002;
+    const EX_INVALID_BOOL = 2003;
+    const EX_INVALID_INT = 2004;
+    const EX_INVALID_STRING = 2005;
+
+    const EX_INVALID_TYPE_ARTICLE = 2101;
+    const EX_INVALID_TYPE_POST = 2102;
+    const EX_INVALID_TYPE_RELATION = 2103;
+    const EX_INVALID_TYPE_RSS_ARTICLE = 2104;
+
+    const EX_INVALID_TYPE_MAIL_BOX = 2201;
+    const EX_INVALID_TYPE_VOTE = 2202;
+    const EX_INVALID_TYPE_WATCH = 2203;
+
+    /**
+     * Communication exceptions.
+     */
+    const EX_CURL = 3001;
+    const EX_FOPEN = 3002;
+
+    /**
+     * DaniWeb exceptions.
+     */
+    const EX_DANIWEB = 4001;
+
+    /**
+     * @var array List of exception messages.
+     */
+    protected $exceptionMessages = array
     (
-        2011 => 'Invalid forum ID',
-        2021 => 'Invalid RSS article type',
-        4001 => 'Access token required',
-        4011 => 'Invalid article ID',
-        4012 => 'Invalid post ID',
-        4021 => 'Invalid mail box type',
-        4022 => 'Invalid vote type',
-        4023 => 'Invalid watch type'
+        self::EX_CONFIGURATION => 'curl and allow_url_fopen disabled',
+
+        self::EX_ACCESS_TOKEN => 'Access token required',
+        self::EX_INVALID_ARRAY => 'Invalid parameter, array expected',
+        self::EX_INVALID_BOOL => 'Invalid parameter, boolean expected',
+        self::EX_INVALID_INT => 'Invalid parameter, positive integer expected',
+        self::EX_INVALID_STRING => 'Invalid parameter, non-empty string expected',
+
+        self::EX_INVALID_TYPE_ARTICLE => 'Invalid parameter, article type expected',
+        self::EX_INVALID_TYPE_POST => 'Invalid parameter, post type expected',
+        self::EX_INVALID_TYPE_RELATION => 'Invalid parameter, relation type expected',
+        self::EX_INVALID_TYPE_RSS_ARTICLE => 'Invalid parameter, RSS article type expected',
+
+        self::EX_INVALID_TYPE_MAIL_BOX => 'Invalid parameter, mail box type expected',
+        self::EX_INVALID_TYPE_VOTE => 'Invalid parameter, vote type expected',
+        self::EX_INVALID_TYPE_WATCH => 'Invalid parameter, watch type expected',
+
+        self::EX_CURL => 'curl failed',
+        self::EX_FOPEN => 'file_get_contents failed',
+
+        self::EX_DANIWEB => 'Invalid request or no data'
     );
 
     public function __construct($message = null, $code = 0, Exception $previous = null)
     {
-        $message = in_array($code, array_keys($this->exceptions)) ? $this->exceptions[$code] : self::UNKNOWN_EXCEPTION;
+        $message =
+            (in_array($code, array_keys($this->exceptionMessages)) ? $this->exceptionMessages[$code] : self::EX_UNKNOWN) .
+            ((is_string($message) and !empty($message)) ? ' -- ' . $message : '');
+
         parent::__construct($message, $code, $previous);
     }
 }
