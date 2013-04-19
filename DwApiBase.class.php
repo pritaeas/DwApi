@@ -176,8 +176,9 @@ class DwApiBase {
                 {
                     $result = $curlResult;
                 }
-                else if ($httpStatus == 400)
+                else if (in_array($httpStatus, array(301, 400)))
                 {
+                    // 301 catches an RSS feed with an invalid forum ID
                     throw new DwApiException(null, DwApiException::EX_DANIWEB);
                 }
                 else
