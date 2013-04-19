@@ -125,8 +125,8 @@ class DwApiOAuth extends DwApiOpen
     /**
      * Watch or unwatch an article.
      *
-     * @param int $articleId Article ID.
-     * @param bool $watchType Watch type.
+     * @param int $articleId Article ID (required).
+     * @param bool $watchType Watch type (required).
      * @throws DwApiException 4001 thrown on empty access token.
      * @throws DwApiException 4011 thrown on invalid article ID.
      * @throws DwApiException 4023 thrown on invalid watch type.
