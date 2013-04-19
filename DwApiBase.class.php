@@ -111,9 +111,9 @@ class DwApiBase {
     /**
      * Get the REST path contents as a string.
      *
-     * @param string $path REST path to use.
-     * @param array|null $getParameters GET parameters (optional).
-     * @param array|null $postParameters POST parameters (optional).
+     * @param string $path REST path to use (required).
+     * @param null|array $getParameters GET parameters (optional).
+     * @param null|array $postParameters POST parameters (optional).
      * @param bool $jsonCheck Check for JSON false result (optional), default true.
      * @return bool|string URL page contents, false on error.
      */
