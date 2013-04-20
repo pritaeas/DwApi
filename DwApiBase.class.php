@@ -41,13 +41,21 @@ class DwApiBase {
     );
 
     /**
-     * @var array List of forum relation types.
+     * @var array List of relation types.
      */
     protected $relationTypes = array
     (
         'ancestors', 'children', 'descendants'
     );
-    
+
+    /**
+     * @var array List of supported sort types.
+     */
+    protected $sortTypes = array
+    (
+        'firstpost', 'lastpost'
+    );
+
     /**
      * Get the list of supported article types (depends on whether an access token is set).
      *
@@ -79,9 +87,9 @@ class DwApiBase {
     }
 
     /**
-     * Get the list of supported forum relation types.
+     * Get the list of supported relation types.
      *
-     * @return array List of forum relation types.
+     * @return array List of relation types.
      */
     public function GetRelationTypes()
     {
@@ -106,6 +114,16 @@ class DwApiBase {
         }
 
         return $result;
+    }
+
+    /**
+     * Get the list of supported sort types.
+     *
+     * @return array List of sort types.
+     */
+    public function GetSortTypes()
+    {
+        return $this->sortTypes;
     }
 
     /**
@@ -277,14 +295,25 @@ class DwApiBase {
     }
 
     /**
-     * Check if article type is valid.
+     * Check if RSS article type is valid.
      *
-     * @param string $articleType Article type.
+     * @param string $rssArticleType RSS article type.
      * @return bool True when valid, false otherwise.
      */
-    protected function IsRssArticleType($articleType)
+    protected function IsRssArticleType($rssArticleType)
     {
-        return in_array($articleType, $this->GetRssArticleTypes());
+        return in_array($rssArticleType, $this->GetRssArticleTypes());
+    }
+
+    /**
+     * Check if sort type is valid.
+     *
+     * @param string $sortType Sort type.
+     * @return bool True when valid, false otherwise.
+     */
+    protected function IsSortType($sortType)
+    {
+        return in_array($sortType, $this->GetSortTypes());
     }
 
     /**
