@@ -38,29 +38,42 @@ class DwApiOpen extends DwApiRss
      */
     public function GetArticles($articleIds = null, $articleType = null, $newestFirst = true, $page = 1)
     {
+        $articleIdString = $this->IdsToString($articleIds);
+        if (($articleIds != null) and empty($articleIdString))
+        {
+            throw new DwApiException('$articleIds', DwApiException::EX_INVALID_INT_ARRAY);
+        }
+
+        if (($articleType != null) and !$this->IsArticleType($articleType))
+        {
+            throw new DwApiException('$articleType', DwApiException::EX_INVALID_TYPE_ARTICLE);
+        }
+
+        if (!is_bool($newestFirst))
+        {
+            throw new DwApiException('$newestFirst', DwApiException::EX_INVALID_BOOL);
+        }
+
         if (!$this->IsValidId($page))
         {
             throw new DwApiException('$page', DwApiException::EX_INVALID_INT);
         }
 
         $url = "/api/articles";
-        $getParameters = array ('page' => $page);
 
-        $articleIdString = $this->IdsToString($articleIds);
         if (!empty($articleIdString)) {
             $url .= "/{$articleIdString}";
         }
 
-        if ($this->IsArticleType($articleType))
+        $getParameters = array ('page' => $page);
+
+        if ($articleType != null)
         {
             $getParameters['filter'] = $articleType;
         }
 
-        if (is_bool($newestFirst))
-        {
-            // todo change to orderBy type
-            $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
-        }
+        // todo change to orderBy type
+        $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
 
         return $this->GetUrl($url, $getParameters);
     }
