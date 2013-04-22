@@ -103,6 +103,11 @@ class DwApiOpen extends DwApiRss
             throw new DwApiException('$articleType', DwApiException::EX_INVALID_TYPE_ARTICLE);
         }
 
+        if (!is_bool($newestFirst))
+        {
+            throw new DwApiException('$newestFirst', DwApiException::EX_INVALID_BOOL);
+        }
+
         if (!$this->IsValidId($page))
         {
             throw new DwApiException('$page', DwApiException::EX_INVALID_INT);
@@ -115,11 +120,8 @@ class DwApiOpen extends DwApiRss
             $getParameters['filter'] = $articleType;
         }
 
-        if (is_bool($newestFirst))
-        {
-            // todo change to orderBy type
-            $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
-        }
+        // todo change to orderBy type
+        $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
 
         return $this->GetUrl("/api/forums/{$forumIdString}/articles", $getParameters);
     }
