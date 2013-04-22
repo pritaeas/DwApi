@@ -398,20 +398,24 @@ class DwApiOpen extends DwApiRss
      *
      * @param null|int|array $postIds Post ID as int, or array of int (optional).
      * @param int $page Page number (optional), default 1.
+     * @throws DwApiException EX_INVALID_INT_ARRAY thrown on non-empty invalid ID's.
      * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
      * @return string JSON result.
      */
     public function GetPosts($postIds = null, $page = 1)
     {
+        $postIdString = $this->IdsToString($postIds);
+        if (($postIds != null) and empty($postIdString))
+        {
+            throw new DwApiException('$postIds', DwApiException::EX_INVALID_INT_ARRAY);
+        }
+
         if (!$this->IsValidId($page))
         {
             throw new DwApiException('$page', DwApiException::EX_INVALID_INT);
         }
 
-        $url = "/api/posts";
-
-        $postIdString = $this->IdsToString($postIds);
-        $url .= empty($postIdString) ? '' : "/{$postIdString}";
+        $url = "/api/posts" . empty($postIdString) ? '' : "/{$postIdString}";
 
         return $this->GetUrl($url, array ('page' => $page));
     }
