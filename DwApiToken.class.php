@@ -175,8 +175,8 @@ class DwApiToken extends DwApiOpen
      * Sets additional access token.
      *
      * @param string $path REST path to use (required).
-     * @param null|array $getParameters GET parameters (optional).
-     * @param null|array $postParameters POST parameters (optional).
+     * @param array $getParameters GET parameters (optional).
+     * @param array $postParameters POST parameters (optional).
      * @param bool $jsonCheck Check for JSON false result (optional), default true.
      * @return bool|string URL page contents, false on error.
      */

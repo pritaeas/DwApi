@@ -29,8 +29,8 @@ class DwApiOpen extends DwApiRss
     /**
      * Get a list of (specific) articles.
      *
-     * @param null|int|array $articleIds Article ID as int, or array of int (optional).
-     * @param null|string $articleType Article type filter (optional).
+     * @param int|array $articleIds Article ID as int, or array of int (optional).
+     * @param string $articleType Article type filter (optional).
      * @param bool $newestFirst Newest post first when true, oldest post first when false, default true.
      * @param int $page Page number (optional), default 1.
      * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
@@ -82,7 +82,7 @@ class DwApiOpen extends DwApiRss
      * Get a list of articles for a specific forum ID, or an array of forum IDs.
      *
      * @param int|array $forumIds Forum ID as int, or array of int (required).
-     * @param null|string $articleType Article type filter (optional).
+     * @param string $articleType Article type filter (optional).
      * @param bool $newestFirst Newest post first when true, Oldest post first when false, default true.
      * @param int $page Page number (optional), default 1.
      * @throws DwApiException EX_INVALID_INT_ARRAY thrown on invalid forum IDs.
@@ -214,8 +214,8 @@ class DwApiOpen extends DwApiRss
      * Get a list of articles for a specific member, or members.
      *
      * @param int|array $memberIds Member ID as int, or array of int (required).
-     * @param null|int $forumId Forum ID (optional).
-     * @param null|string $articleType Article type filter (optional).
+     * @param int $forumId Forum ID (optional).
+     * @param string $articleType Article type filter (optional).
      * @param bool $newestFirst Newest post first when true, Oldest post first when false, default true.
      * @param int $page Page number (optional), default 1.
      * @throws DwApiException EX_INVALID_INT_ARRAY thrown on invalid member IDs.
@@ -291,7 +291,7 @@ class DwApiOpen extends DwApiRss
      * Get posts for a specific member ID, optionally filtered.
      *
      * @param int $memberId Member ID (required).
-     * @param null|string $postType Post type to filter on (optional).
+     * @param string $postType Post type to filter on (optional).
      * @param int $page Page number (optional), default 1.
      * @throws DwApiException EX_INVALID_INT thrown on invalid member ID.
      * @throws DwApiException EX_INVALID_TYPE_POST thrown on non-null invalid post type.
@@ -353,7 +353,7 @@ class DwApiOpen extends DwApiRss
     /**
      * Get a list of members, or a list of specific members.
      *
-     * @param null|int|array $members Member as string, member ID as int or array of int (optional).
+     * @param int|array $members Member as string, member ID as int or array of int (optional).
      * @param int $page Page number (optional), default 1.
      * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
      * @return string JSON result.
@@ -406,7 +406,7 @@ class DwApiOpen extends DwApiRss
     /**
      * Get a list of posts, or a list of specific posts.
      *
-     * @param null|int|array $postIds Post ID as int, or array of int (optional).
+     * @param int|array $postIds Post ID as int, or array of int (optional).
      * @param int $page Page number (optional), default 1.
      * @throws DwApiException EX_INVALID_INT_ARRAY thrown on non-empty invalid ID's.
      * @throws DwApiException EX_INVALID_INT thrown on invalid page number.

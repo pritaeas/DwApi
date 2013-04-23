@@ -130,8 +130,8 @@ class DwApiBase {
      * Get the REST path contents as a string.
      *
      * @param string $path REST path to use (required).
-     * @param null|array $getParameters GET parameters (optional).
-     * @param null|array $postParameters POST parameters (optional).
+     * @param array $getParameters GET parameters (optional).
+     * @param array $postParameters POST parameters (optional).
      * @param bool $jsonCheck Check for JSON false result (optional), default true.
      * @throws DwApiException EX_INVALID_STRING on invalid or empty path.
      * @throws DwApiException EX_INVALID_ARRAY on invalid array $getParameters or $postParameters.
@@ -140,7 +140,7 @@ class DwApiBase {
      * @throws DwApiException EX_CURL on curl failure.
      * @throws DwApiException EX_FOPEN on file_get_contents failure.
      * @throws DwApiException EX_DANIWEB on invalid request or no data.
-     * @return bool|string URL page contents, false on error.
+     * @return string URL page contents.
      */
     protected function GetUrl($path, $getParameters = null, $postParameters = null, $jsonCheck = true)
     {
