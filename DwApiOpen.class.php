@@ -152,14 +152,22 @@ class DwApiOpen extends DwApiRss
     /**
      * Get a list of (filtered) forums.
      *
-     * @param null|int|array $forumIds Forum ID as int, or array of int (optional).
-     * @param null|string $relation Forum relation type (optional).
+     * @param int|array $forumIds Forum ID as int, or array of int (optional).
+     * @param string $relation Forum relation type (optional).
      * @param bool $includeSelf Include the forumID in the result (optional), default false.
+     * @throws DwApiException EX_INVALID_TYPE_INT_ARRAY thrown on invalid forum IDs.
      * @throws DwApiException EX_INVALID_TYPE_RELATION thrown on non-null invalid relation type.
+     * @throws DwApiException EX_INVALID_BOOL thrown on invalid boolean.
      * @return string JSON result.
      */
     public function GetForums($forumIds = null, $relation = null, $includeSelf = false)
     {
+        $forumIdString = $this->IdsToString($forumIds);
+        if (($forumIds != null) and empty($forumIdString))
+        {
+            throw new DwApiException('$forumIds', DwApiException::EX_INVALID_INT_ARRAY);
+        }
+
         if (($relation != null) and !$this->IsRelationType($relation))
         {
             throw new DwApiException('$relation', DwApiException::EX_INVALID_TYPE_RELATION);
@@ -172,7 +180,6 @@ class DwApiOpen extends DwApiRss
 
         $url = '/api/forums';
 
-        $forumIdString = $this->IdsToString($forumIds);
         if (!empty($forumIdString))
         {
             $url .= "/{$forumIdString}";
@@ -183,9 +190,7 @@ class DwApiOpen extends DwApiRss
             $url .= "/{$relation}";
         }
 
-        $getParameters = array ('include_self' => $includeSelf);
-
-        return $this->GetUrl($url, $getParameters);
+        return $this->GetUrl($url, array ('include_self' => $includeSelf));
     }
 
     /**
@@ -355,6 +360,12 @@ class DwApiOpen extends DwApiRss
      */
     public function GetMembers($members = null, $page = 1)
     {
+        $memberIdString = $this->IdsToString($members);
+        if (($members != null) and !is_string($members) and !is_int($members) and !is_array($members) and empty($memberIdString))
+        {
+            throw new DwApiException('$members', DwApiException::EX_INVALID_INT_ARRAY_STRING);
+        }
+
         if (!$this->IsValidId($page))
         {
             throw new DwApiException('$page', DwApiException::EX_INVALID_INT);
@@ -368,7 +379,6 @@ class DwApiOpen extends DwApiRss
         }
         else
         {
-            $memberIdString = $this->IdsToString($members);
             $url .= empty($memberIdString) ? '' : "/{$memberIdString}";
             $getParameters = array ('page' => $page);
         }
