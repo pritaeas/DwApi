@@ -1,4 +1,6 @@
 <?php
+namespace DwApi;
+
 include 'DwApiException.class.php';
 
 class DwApiBase {

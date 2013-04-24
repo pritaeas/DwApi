@@ -1,4 +1,6 @@
 <?php
+namespace DwApi;
+
 include 'DwApiOpen.class.php';
 
 class DwApiToken extends DwApiOpen

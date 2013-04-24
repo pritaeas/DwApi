@@ -1,4 +1,6 @@
 <?php
+namespace DwApi;
+
 include 'DwApiRss.class.php';
 
 class DwApiOpen extends DwApiRss

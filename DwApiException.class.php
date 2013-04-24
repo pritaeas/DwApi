@@ -1,5 +1,7 @@
 <?php
-class DwApiException extends Exception
+namespace DwApi;
+
+class DwApiException extends \Exception
 {
     /**
      * Default exception message for unrecognized codes.
@@ -73,7 +75,7 @@ class DwApiException extends Exception
         self::EX_DANIWEB => 'Invalid request or no data'
     );
 
-    public function __construct($message = null, $code = 0, Exception $previous = null)
+    public function __construct($message = null, $code = 0, \Exception $previous = null)
     {
         $message =
             (in_array($code, array_keys($this->exceptionMessages)) ? $this->exceptionMessages[$code] : self::EX_UNKNOWN) .
