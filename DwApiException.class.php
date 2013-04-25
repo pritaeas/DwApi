@@ -29,6 +29,7 @@ class DwApiException extends \Exception
     const EX_INVALID_TYPE_POST = 2202;
     const EX_INVALID_TYPE_RELATION = 2203;
     const EX_INVALID_TYPE_RSS_ARTICLE = 2204;
+    const EX_INVALID_TYPE_SORT = 2205;
 
     const EX_INVALID_TYPE_MAIL_BOX = 2301;
     const EX_INVALID_TYPE_VOTE = 2302;
@@ -64,6 +65,7 @@ class DwApiException extends \Exception
         self::EX_INVALID_TYPE_POST => 'Invalid parameter, post type expected',
         self::EX_INVALID_TYPE_RELATION => 'Invalid parameter, relation type expected',
         self::EX_INVALID_TYPE_RSS_ARTICLE => 'Invalid parameter, RSS article type expected',
+        self::EX_INVALID_TYPE_SORT => 'Invalid parameter, sort type expected',
 
         self::EX_INVALID_TYPE_MAIL_BOX => 'Invalid parameter, mail box type expected',
         self::EX_INVALID_TYPE_VOTE => 'Invalid parameter, vote type expected',

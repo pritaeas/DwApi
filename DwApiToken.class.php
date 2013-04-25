@@ -55,7 +55,7 @@ class DwApiToken extends DwApiOpen
      * @param string $mailBoxType Mail box type (required).
      * @throws DwApiException EX_ACCESS_TOKEN thrown on empty access token.
      * @throws DwApiException EX_INVALID_TYPE_MAIL_BOX thrown on invalid mail box type.
-     * @return bool|string JSON result, false on error.
+     * @return string JSON result.
      */
     public function GetPrivateMessages($mailBoxType)
     {
@@ -100,7 +100,7 @@ class DwApiToken extends DwApiOpen
      * @throws DwApiException EX_ACCESS_TOKEN thrown on empty access token.
      * @throws DwApiException EX_INVALID_INT thrown on invalid post ID.
      * @throws DwApiException EX_INVALID_TYPE_VOTE thrown on invalid vote type.
-     * @return bool|string JSON result, false on error.
+     * @return string JSON result.
      */
     public function VotePost($postId, $voteType)
     {
@@ -132,7 +132,7 @@ class DwApiToken extends DwApiOpen
      * @throws DwApiException EX_ACCESS_TOKEN thrown on empty access token.
      * @throws DwApiException EX_INVALID_INT thrown on invalid article ID.
      * @throws DwApiException EX_INVALID_TYPE_WATCH thrown on invalid watch type.
-     * @return bool|string JSON result, false on error.
+     * @return string JSON result.
      */
     public function WatchArticle($articleId, $watchType)
     {
@@ -157,10 +157,10 @@ class DwApiToken extends DwApiOpen
     }
 
     /**
-     * Get logged in user details.
+     * Get the profile for the logged in user.
      *
      * @throws DwApiException EX_ACCESS_TOKEN thrown on empty access token.
-     * @return bool|string JSON result, false on error.
+     * @return string JSON result.
      */
     public function WhoAmI()
     {
@@ -180,7 +180,7 @@ class DwApiToken extends DwApiOpen
      * @param array $getParameters GET parameters (optional).
      * @param array $postParameters POST parameters (optional).
      * @param bool $jsonCheck Check for JSON false result (optional), default true.
-     * @return bool|string URL page contents, false on error.
+     * @return string URL page contents.
      */
     protected function GetUrl($path, $getParameters = null, $postParameters = null, $jsonCheck = true)
     {

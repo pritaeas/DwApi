@@ -33,12 +33,15 @@ class DwApiOpen extends DwApiRss
      *
      * @param int|array $articleIds Article ID as int, or array of int (optional).
      * @param string $articleType Article type filter (optional).
-     * @param bool $newestFirst Newest post first when true, oldest post first when false, default true.
+     * @param string $sortType Sort type (optional).
      * @param int $page Page number (optional), default 1.
+     * @throws DwApiException EX_INVALID_INT_ARRAY thrown on invalid article IDs.
+     * @throws DwApiException EX_INVALID_TYPE_ARTICLE thrown on invalid article type.
+     * @throws DwApiException EX_INVALID_TYPE_SORT thrown on invalid sort type.
      * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
      * @return string JSON result.
      */
-    public function GetArticles($articleIds = null, $articleType = null, $newestFirst = true, $page = 1)
+    public function GetArticles($articleIds = null, $articleType = null, $sortType = null, $page = 1)
     {
         $articleIdString = $this->IdsToString($articleIds);
         if (($articleIds != null) and empty($articleIdString))
@@ -51,9 +54,9 @@ class DwApiOpen extends DwApiRss
             throw new DwApiException('$articleType', DwApiException::EX_INVALID_TYPE_ARTICLE);
         }
 
-        if (!is_bool($newestFirst))
+        if (($sortType != null) and !$this->IsSortType($sortType))
         {
-            throw new DwApiException('$newestFirst', DwApiException::EX_INVALID_BOOL);
+            throw new DwApiException('$sortType', DwApiException::EX_INVALID_TYPE_SORT);
         }
 
         if (!$this->IsValidId($page))
@@ -74,8 +77,10 @@ class DwApiOpen extends DwApiRss
             $getParameters['filter'] = $articleType;
         }
 
-        // todo change to orderBy type
-        $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
+        if ($sortType != null)
+        {
+            $getParameters['orderby'] = $sortType;
+        }
 
         return $this->GetUrl($url, $getParameters);
     }
@@ -85,14 +90,15 @@ class DwApiOpen extends DwApiRss
      *
      * @param int|array $forumIds Forum ID as int, or array of int (required).
      * @param string $articleType Article type filter (optional).
-     * @param bool $newestFirst Newest post first when true, Oldest post first when false, default true.
+     * @param string $sortType Sort type (optional).
      * @param int $page Page number (optional), default 1.
      * @throws DwApiException EX_INVALID_INT_ARRAY thrown on invalid forum IDs.
      * @throws DwApiException EX_INVALID_TYPE_ARTICLE thrown on non-null invalid article type.
+     * @throws DwApiException EX_INVALID_TYPE_SORT thrown on non-null invalid sort type.
      * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
      * @return string JSON result.
      */
-    public function GetForumArticles($forumIds, $articleType = null, $newestFirst = true, $page = 1)
+    public function GetForumArticles($forumIds, $articleType = null, $sortType = null, $page = 1)
     {
         $forumIdString = $this->IdsToString($forumIds);
         if (empty($forumIdString))
@@ -105,9 +111,9 @@ class DwApiOpen extends DwApiRss
             throw new DwApiException('$articleType', DwApiException::EX_INVALID_TYPE_ARTICLE);
         }
 
-        if (!is_bool($newestFirst))
+        if (($sortType != null) and !$this->IsSortType($sortType))
         {
-            throw new DwApiException('$newestFirst', DwApiException::EX_INVALID_BOOL);
+            throw new DwApiException('$sortType', DwApiException::EX_INVALID_TYPE_SORT);
         }
 
         if (!$this->IsValidId($page))
@@ -122,8 +128,10 @@ class DwApiOpen extends DwApiRss
             $getParameters['filter'] = $articleType;
         }
 
-        // todo change to orderBy type
-        $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
+        if ($sortType != null)
+        {
+            $getParameters['orderby'] = $sortType;
+        }
 
         return $this->GetUrl("/api/forums/{$forumIdString}/articles", $getParameters);
     }
@@ -218,16 +226,16 @@ class DwApiOpen extends DwApiRss
      * @param int|array $memberIds Member ID as int, or array of int (required).
      * @param int $forumId Forum ID (optional).
      * @param string $articleType Article type filter (optional).
-     * @param bool $newestFirst Newest post first when true, Oldest post first when false, default true.
+     * @param string $sortType Sort type (optional).
      * @param int $page Page number (optional), default 1.
      * @throws DwApiException EX_INVALID_INT_ARRAY thrown on invalid member IDs.
      * @throws DwApiException EX_INVALID_INT thrown on non-null invalid forum ID.
      * @throws DwApiException EX_INVALID_TYPE_ARTICLE thrown on non-null invalid article type.
-     * @throws DwApiException EX_INVALID_BOOL thrown on invalid newest first.
+     * @throws DwApiException EX_INVALID_TYPE_SORT thrown on invalid sort type.
      * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
      * @return string JSON result.
      */
-    public function GetMemberArticles($memberIds, $forumId = null, $articleType = null, $newestFirst = true, $page = 1)
+    public function GetMemberArticles($memberIds, $forumId = null, $articleType = null, $sortType = null, $page = 1)
     {
         $memberIdString = $this->IdsToString($memberIds);
         if (empty($memberIdString))
@@ -245,9 +253,9 @@ class DwApiOpen extends DwApiRss
             throw new DwApiException('$articleType', DwApiException::EX_INVALID_TYPE_ARTICLE);
         }
 
-        if (!is_bool($newestFirst))
+        if (($sortType != null) and !$this->IsSortType($sortType))
         {
-            throw new DwApiException('$newestFirst', DwApiException::EX_INVALID_BOOL);
+            throw new DwApiException('$sortType', DwApiException::EX_INVALID_TYPE_SORT);
         }
 
         if (!$this->IsValidId($page))
@@ -267,7 +275,10 @@ class DwApiOpen extends DwApiRss
             $getParameters['filter'] = $articleType;
         }
 
-        $getParameters['orderby'] = $newestFirst ? 'lastpost' : 'firstpost';
+        if ($sortType != null)
+        {
+            $getParameters['orderby'] = $sortType;
+        }
 
         return $this->GetUrl("/api/members/{$memberIdString}/articles", $getParameters);
     }
@@ -355,15 +366,16 @@ class DwApiOpen extends DwApiRss
     /**
      * Get a list of members, or a list of specific members.
      *
-     * @param int|array $members Member as string, member ID as int or array of int (optional).
+     * @param int|array|string $members Member as string, member ID as int or array of int (optional).
      * @param int $page Page number (optional), default 1.
+     * @throws DwApiException EX_INVALID_INT_ARRAY_STRING thrown on invalid members.
      * @throws DwApiException EX_INVALID_INT thrown on invalid page number.
      * @return string JSON result.
      */
     public function GetMembers($members = null, $page = 1)
     {
         $memberIdString = $this->IdsToString($members);
-        if (($members != null) and !is_string($members) and !is_int($members) and !is_array($members) and empty($memberIdString))
+        if (($members != null) and (!is_string($members) or empty($members)) and empty($memberIdString))
         {
             throw new DwApiException('$members', DwApiException::EX_INVALID_INT_ARRAY_STRING);
         }
@@ -443,7 +455,7 @@ class DwApiOpen extends DwApiRss
      */
     public function SearchArticles($query, $page = 1)
     {
-        if (empty($query) or !is_string($query))
+        if (!is_string($query) or empty($query))
         {
             throw new DwApiException('$query', DwApiException::EX_INVALID_STRING);
         }
@@ -467,7 +479,7 @@ class DwApiOpen extends DwApiRss
      */
     public function SearchMembers($memberName, $page = 1)
     {
-        if (empty($memberName) or !is_string($memberName))
+        if (!is_string($memberName) or empty($memberName))
         {
             throw new DwApiException('$memberName', DwApiException::EX_INVALID_STRING);
         }
