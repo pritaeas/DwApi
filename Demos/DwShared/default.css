@@ -1,0 +1,80 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+}
+header div {
+    background-color: #582B6A;
+}
+div.rss {
+    width: 300px;
+    height: 200px;
+    float: left;
+    font-size: .8em;
+    overflow: hidden;
+    margin: 3px;
+    padding: 3px;
+    border: 1px solid #e1e1e1;
+}
+#toolbar {
+    margin: 0;
+    padding: 3px 5px;
+    font-size: .8em;
+    color: #cacaca;
+    background-color: #371b42;
+    min-height: 20px;
+}
+#toolbar a {
+    color: #cacaca;
+}
+div.article, div.error, div.message {
+    font-size: .8em;
+    overflow: hidden;
+    margin: 3px;
+    padding: 3px;
+    border: 1px solid #e1e1e1;
+}
+footer div {
+    clear: both;
+    border: 0;
+    margin: 0;
+    padding: 3px;
+    color: #000000;
+    background-color: #e5e5e5;
+}
+.error {
+    background-color: #ff9999;
+}
+.highlight {
+    background-color: #ffff99;
+}
+h1 {
+    font-size: 1.6em;
+    padding: 5px;
+    margin: 0;
+    color: #FFFFFF;
+}
+h2, h3, h4, h5, h6 {
+    color: #752f8e;
+    padding: 3px;
+    margin: 3px;
+}
+h2 {
+    font-size: 1.4em;
+}
+h3 {
+    font-size: 1.2em;
+}
+h4 {
+    font-size: 1.1em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+    font-size: .8em;
+}
+p {
+    padding: 0;
+    margin-left: 6px;
+}
