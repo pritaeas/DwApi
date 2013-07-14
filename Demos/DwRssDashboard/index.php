@@ -29,11 +29,11 @@ if ($forums)
 <html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title>DaniWeb API Demo - Rss Dashboard</title>
+    <title>DaniWeb API Demo - RSS Dashboard</title>
     <link rel="stylesheet" href="../DwShared/default.css" />
 </head>
 <body>
-    <h1>DaniWeb API Demo - Rss Dashboard</h1>
+    <h1>DaniWeb API Demo - RSS Dashboard</h1>
     <?php
     foreach ($divs as $div)
     {
