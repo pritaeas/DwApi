@@ -3,22 +3,20 @@ namespace DwShared;
 
 class Parser
 {
-    public function ParseForumsResult($forumObject, $callback)
+    public function FlattenForumsResult($forumObject)
     {
         $result = array ();
 
-        if (is_callable($callback)) {
-            if (!isset($forumObject->no_access) or !$forumObject->no_access)
-            {
-                $result[] = call_user_func($callback, $forumObject->id, $forumObject->title);
-            }
+        if (!isset($forumObject->no_access) or !$forumObject->no_access)
+        {
+            $result[$forumObject->id] = $forumObject;
         }
 
         if (isset($forumObject->relatives) and isset($forumObject->relatives->children))
         {
             foreach ($forumObject->relatives->children as $subForum)
             {
-                $result = array_merge($result, $this->ParseForumsResult($subForum, $callback));
+                $result = $result + $this->FlattenForumsResult($subForum);
             }
         }
 
@@ -55,6 +53,28 @@ class Parser
                 $result = '<span class="error">' . $e->getMessage() . '</span>';
             }
         }
+        return $result;
+    }
+
+    public function ParseForumsResult($forumObject, $callback)
+    {
+        $result = array ();
+
+        if (is_callable($callback)) {
+            if (!isset($forumObject->no_access) or !$forumObject->no_access)
+            {
+                $result[] = call_user_func($callback, $forumObject->id, $forumObject->title);
+            }
+        }
+
+        if (isset($forumObject->relatives) and isset($forumObject->relatives->children))
+        {
+            foreach ($forumObject->relatives->children as $subForum)
+            {
+                $result = array_merge($result, $this->ParseForumsResult($subForum, $callback));
+            }
+        }
+
         return $result;
     }
 }
