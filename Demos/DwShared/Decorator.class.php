@@ -9,7 +9,7 @@ class Decorator
 
         if ($highlight)
         {
-            $result = "<div class=\"article\" id=\"{$article->id}\">";
+            $result = "<div class=\"article highlight\" id=\"{$article->id}\">";
         }
         else
         {

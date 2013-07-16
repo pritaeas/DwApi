@@ -41,6 +41,7 @@ else
 }
 ?>
 <ul>
+    <li><p><a href="DwArticleWatch/index.php">DwArticleWatch</a></li>
     <li><p><a href="DwRssDashboard/index.php">DwRssDashboard</a></li>
     <li><p><a href="DwWatchedArticles/index.php">DwWatchedArticles</a></li>
 </ul>
