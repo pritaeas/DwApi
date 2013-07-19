@@ -137,6 +137,30 @@ class DwApiOpen extends DwApiRss
     }
 
     /**
+     * Get chat messages for a specific forum.
+     *
+     * @param int $forumId Forum ID (required).
+     * @param int $lastId Last message ID (optional).
+     * @throws DwApiException EX_INVALID_INT thrown on invalid forum ID.
+     * @return string JSON result.
+     */
+    public function GetForumChat($forumId, $lastId = 0)
+    {
+        if (!$this->IsValidId($forumId))
+        {
+            throw new DwApiException('$forumId', DwApiException::EX_INVALID_INT);
+        }
+
+        $getParameters = array ();
+        if ($this->IsValidId($lastId))
+        {
+            $getParameters['last_id'] = $lastId;
+        }
+
+        return $this->GetUrl("/api/forums/{$forumId}/chat", $getParameters);
+    }
+
+    /**
      * Get posts for a specific forum.
      *
      * @param int $forumId Forum ID (required).
@@ -281,6 +305,30 @@ class DwApiOpen extends DwApiRss
         }
 
         return $this->GetUrl("/api/members/{$memberIdString}/articles", $getParameters);
+    }
+
+    /**
+     * Get chat messages for a specific member.
+     *
+     * @param int $memberId Member ID (required).
+     * @param int $lastId Last message ID (optional).
+     * @throws DwApiException EX_INVALID_INT thrown on invalid member ID.
+     * @return string JSON result.
+     */
+    public function GetMemberChat($memberId, $lastId = 0)
+    {
+        if (!$this->IsValidId($memberId))
+        {
+            throw new DwApiException('$memberId', DwApiException::EX_INVALID_INT);
+        }
+
+        $getParameters = array ();
+        if ($this->IsValidId($lastId))
+        {
+            $getParameters['last_id'] = $lastId;
+        }
+
+        return $this->GetUrl("/api/members/{$memberId}/chat", $getParameters);
     }
 
     /**
