@@ -140,21 +140,29 @@ class DwApiOpen extends DwApiRss
      * Get chat messages for a specific forum.
      *
      * @param int $forumId Forum ID (required).
-     * @param int $lastId Last message ID (optional).
+     * @param int $sinceId Message ID to start from (optional).
+     * @param bool $longPolling Use long polling (optional), default false.
      * @throws DwApiException EX_INVALID_INT thrown on invalid forum ID.
+     * @throws DwApiException EX_INVALID_BOOL thrown on invalid long polling.
      * @return string JSON result.
      */
-    public function GetForumChat($forumId, $lastId = 0)
+    public function GetForumChat($forumId, $sinceId = 0, $longPolling = false)
     {
         if (!$this->IsValidId($forumId))
         {
             throw new DwApiException('$forumId', DwApiException::EX_INVALID_INT);
         }
 
-        $getParameters = array ();
-        if ($this->IsValidId($lastId))
+        if (!is_bool($longPolling))
         {
-            $getParameters['last_id'] = $lastId;
+            throw new DwApiException('$longPolling', DwApiException::EX_INVALID_BOOL);
+        }
+
+        $getParameters = array ('long_polling' => ($longPolling ? 1 : 0));
+
+        if ($this->IsValidId($sinceId))
+        {
+            $getParameters['since_id'] = $sinceId;
         }
 
         return $this->GetUrl("/api/forums/{$forumId}/chat", $getParameters);
@@ -311,21 +319,29 @@ class DwApiOpen extends DwApiRss
      * Get chat messages for a specific member.
      *
      * @param int $memberId Member ID (required).
-     * @param int $lastId Last message ID (optional).
+     * @param int $sinceId Message ID to start from (optional).
+     * @param bool $longPolling Use long polling (optional), default false.
      * @throws DwApiException EX_INVALID_INT thrown on invalid member ID.
+     * @throws DwApiException EX_INVALID_BOOL thrown on invalid long polling.
      * @return string JSON result.
      */
-    public function GetMemberChat($memberId, $lastId = 0)
+    public function GetMemberChat($memberId, $sinceId = 0, $longPolling = false)
     {
         if (!$this->IsValidId($memberId))
         {
             throw new DwApiException('$memberId', DwApiException::EX_INVALID_INT);
         }
 
-        $getParameters = array ();
-        if ($this->IsValidId($lastId))
+        if (!is_bool($longPolling))
         {
-            $getParameters['last_id'] = $lastId;
+            throw new DwApiException('$longPolling', DwApiException::EX_INVALID_BOOL);
+        }
+
+        $getParameters = array ('long_polling' => ($longPolling ? 1 : 0));
+
+        if ($this->IsValidId($sinceId))
+        {
+            $getParameters['since_id'] = $sinceId;
         }
 
         return $this->GetUrl("/api/members/{$memberId}/chat", $getParameters);
