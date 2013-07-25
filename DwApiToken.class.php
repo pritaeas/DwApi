@@ -93,6 +93,70 @@ class DwApiToken extends DwApiOpen
     }
 
     /**
+     * Post a chat message to a forum's chat room.
+     *
+     * @param int $forumId Forum ID (required).
+     * @param string $message Text message (required).
+     * @throws DwApiException EX_ACCESS_TOKEN thrown on empty access token.
+     * @throws DwApiException EX_INVALID_INT thrown on invalid forum ID.
+     * @throws DwApiException EX_INVALID_STRING thrown on empty text message.
+     * @return string JSON result.
+     */
+    public function PostForumChat($forumId, $message)
+    {
+        if ($this->accessToken == null)
+        {
+            throw new DwApiException(null, DwApiException::EX_ACCESS_TOKEN);
+        }
+
+        if (!$this->IsValidId($forumId))
+        {
+            throw new DwApiException('$forumId', DwApiException::EX_INVALID_INT);
+        }
+
+        $message = trim($message);
+        if (empty($message))
+        {
+            throw new DwApiException('$message', DwApiException::EX_INVALID_STRING);
+        }
+
+        return $this->GetUrl('/api/chat', null,
+            array ('room_type' => 'forum', 'room_id' => $forumId, 'message' => $message));
+    }
+
+    /**
+     * Post a chat message to a member's chat room.
+     *
+     * @param int $memberId Member ID (required).
+     * @param string $message Text message (required).
+     * @throws DwApiException EX_ACCESS_TOKEN thrown on empty access token.
+     * @throws DwApiException EX_INVALID_INT thrown on invalid member ID.
+     * @throws DwApiException EX_INVALID_STRING thrown on empty text message.
+     * @return string JSON result.
+     */
+    public function PostMemberChat($memberId, $message)
+    {
+        if ($this->accessToken == null)
+        {
+            throw new DwApiException(null, DwApiException::EX_ACCESS_TOKEN);
+        }
+
+        if (!$this->IsValidId($memberId))
+        {
+            throw new DwApiException('$memberId', DwApiException::EX_INVALID_INT);
+        }
+
+        $message = trim($message);
+        if (empty($message))
+        {
+            throw new DwApiException('$message', DwApiException::EX_INVALID_STRING);
+        }
+
+        return $this->GetUrl('/api/chat', null,
+            array ('room_type' => 'member', 'room_id' => $memberId, 'message' => $message));
+    }
+
+    /**
      * Upvote or downvote a post.
      *
      * @param int $postId Post ID (required).
