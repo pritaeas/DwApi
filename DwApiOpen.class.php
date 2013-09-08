@@ -503,7 +503,7 @@ class DwApiOpen extends DwApiRss
             throw new DwApiException('$page', DwApiException::EX_INVALID_INT);
         }
 
-        $url = "/api/posts" . empty($postIdString) ? '' : "/{$postIdString}";
+        $url = "/api/posts" . (empty($postIdString) ? '' : "/{$postIdString}");
 
         return $this->GetUrl($url, array ('page' => $page));
     }
