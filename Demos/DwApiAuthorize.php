@@ -1,41 +1,32 @@
 <?php
 session_start();
 
-$clientId = 0;		// Your DaniWeb API client ID
-$clientSecret = '';	// Your DaniWeb API secret
-$currentUrl = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+$client_id = 0;		// Your DaniWeb API client ID
+$client_secret = '';	// Your DaniWeb API secret
+$current_url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 
-if (!isset($_REQUEST['code']))
-{
-    header("Location: http://www.daniweb.com/api/oauth?client_id=$clientId&redirect_uri=" . urlencode($currentUrl));
-    exit;
+if (!isset($_REQUEST['code'])) 
+{ 
+	header("Location: http://www.daniweb.com/api/oauth?response_type=code&client_id=$client_id&redirect_uri=".urlencode($current_url)); 
+    exit();
 }
 
-$ch = curl_init('http://www.daniweb.com/api/access_token');
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_NOBODY, true);
-curl_setopt($ch, CURLOPT_HEADER, true);
+$ch = curl_init('http://www.daniweb.com/api/access_token'); 
 
-curl_setopt($ch, CURLOPT_POSTFIELDS, array(
-    'code' => $_REQUEST['code'],
-    'redirect_uri' => $currentUrl,
-    'client_id' => $clientId,
-    'client_secret' => $clientSecret
-));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+curl_setopt($ch, CURLOPT_POST, true); 
+curl_setopt($ch, CURLOPT_POSTFIELDS, array( 
+	'code' => $_REQUEST['code'], 
+	'redirect_uri' => $current_url, 
+	'client_id' => $client_id, 
+	'client_secret' => $client_secret,
+	'grant_type' => 'authorization_code'
+)); 
 
-$result = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+$response = json_decode(curl_exec($ch)); 
+
 curl_close($ch);
 
-if ($httpCode == 301 or $httpCode == 302) {
-    preg_match("@https?://([-\w\.]+)+(:\d+)?(/([\w/_\-\.]*(\?\S+)?)?)?@", $result, $matches);
-    $targetUrl = $matches[0];
-    $urlParts = parse_url($targetUrl);
-    parse_str($urlParts['query'], $queryParts);
-    $token = $queryParts['access_token'];
-    $_SESSION['DwApiAccessToken'] =  $token;
-    header('Location: index.php');
-}
+$_SESSION['DwApiAccessToken'] = $response->access_token;
+header('Location: index.php');	
 ?>
