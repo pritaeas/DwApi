@@ -32,7 +32,7 @@ class DwApiBase {
     /**
      * @var string Base URL for the DaniWeb API.
      */
-    protected $baseUrl = 'http://www.daniweb.com';
+    protected $baseUrl = 'https://www.daniweb.com';
 
     /**
      * @var array List of supported post types.
