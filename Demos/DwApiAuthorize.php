@@ -7,11 +7,11 @@ $current_url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 
 if (!isset($_REQUEST['code'])) 
 { 
-	header("Location: http://www.daniweb.com/api/oauth?response_type=code&client_id=$client_id&redirect_uri=".urlencode($current_url)); 
+	header("Location: https://www.daniweb.com/api/oauth?response_type=code&client_id=$client_id&redirect_uri=".urlencode($current_url)); 
     exit();
 }
 
-$ch = curl_init('http://www.daniweb.com/api/access_token'); 
+$ch = curl_init('https://www.daniweb.com/api/access_token'); 
 
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
 curl_setopt($ch, CURLOPT_POST, true); 
